@@ -10,7 +10,9 @@ reserved to store the number of empty spaces ahead of the car.
     """
     def __init__(self, position=0, speed=0):
         self.position = position
-        self.speed = speed
+        self.speed = abs(int(random.gauss(int(app.maxvel),2)))
+	#print type(random.gauss(int(app.maxvel),3))
+	#print abs(int(random.gauss(int(app.maxvel),2))), "heydhfsufad"
         self.g = 0
     def __str__(self):
         return 'Position: %d, Speed: %d\nEmpty spaces ahead: %d' % (self.position, self.speed, self.g)
@@ -109,6 +111,7 @@ class Lane(object):
         if car.position > self.length - 1:
             car.position -= self.length
             
+
 class Data(object):
     """A data-holding object which contains histories of each car's position and speed as well as the length of the lane and the number of cars on the lane."""
     def __init__(self):
@@ -133,10 +136,20 @@ class Data(object):
     def update_number(self, lane):
         self.number_of_cars = len(lane.carlist)
 
+
+
+
+
+
+
+
+
 def update_and_move(car, lane, vmax, p, cc):
     """To be used only within other rules definitions. Sets the car's speed appropriately, then moves it."""
     if car.speed > car.g:
         car.speed = car.g
+    if car.speed > vmax:
+	car.speed -= 1
     if car.speed < car.g and car.speed < vmax:
         car.speed += 1
     if car.speed == vmax and cc:
@@ -184,6 +197,12 @@ def asep(data, lane, vmax, n=20, p=0, cc=False):
     
 
 
+
+
+
+
+
+
 ## this part is the visualization
 
 ## Defines the Car object and the Lane object. This was built assuming the movement of the cars would be handled by a 'rules' script.
@@ -201,6 +220,13 @@ cars = []
 size = []
 mode = ['','stca','asep','ca184']
 xy = []
+
+
+
+
+
+
+
 
 class ToolTip(object):
 
@@ -251,9 +277,16 @@ def createToolTip(widget, text):
 
 
 
+
+
+
+
+
+
 class App:
 
     def __init__(self, root):
+	self.ii = "foo"
 	self.length = 30
 	self.lane= Lane(self.length)
 	self.data = Data()
@@ -328,9 +361,9 @@ class App:
 	self.velocity_ent.pack()
 
 	## enter initial values
-	self.txt_ent.insert(0, "10")
-	self.size_ent.insert(0, "20")
-	self.time_ent.insert(0, "11")
+	self.txt_ent.insert(0, "1")
+	self.size_ent.insert(0, "60")
+	self.time_ent.insert(0, "5")
 	self.velocity_ent.insert(0, "3")
 	##
 
@@ -353,12 +386,23 @@ class App:
 	#self.create_size = Button(frame, text="Length", command=self.lanesize)
         #self.create_size.pack(side=LEFT)
 
+
+	self.maxvel = self.velocity_ent.get()
+
     #def cb(self):
     #    print "variable is", self.var.get()
 
     def sel(self):
    	selection = "traffic simulation in " + str(mode[self.var2.get()]) + " mode"
 	self.label.config(text = selection)
+
+
+
+
+
+
+
+
 
     def adding(self):
 	if not self.txt_ent.get():
@@ -378,6 +422,7 @@ class App:
 	kk = int(self.time_ent.get())
 	numcar.append(h)
 	pos = self.data.position_history
+	vel = self.data.speed_history
 	if not pos:
 		pass
 	else:
@@ -385,6 +430,7 @@ class App:
 		while self.pos:
 			self.pos.pop(0)
 			col.pop(0) 
+			vel.pop(0)
 			a = self.lane.carlist[0]
 			self.lane.remove_car(a)
 			for i in range(len(cars)):
@@ -433,7 +479,11 @@ class App:
 	for i in range(len(self.pos)): #this prints the last position - beware
 		print self.lane.carlist[i].position
 	print self.pos
-	print self.lane.map # map also displays the last position of the cars. data.position_history is the only useful one
+	#print self.lane.map # map also displays the last position of the cars. data.position_history is the only useful one
+	print self.data.speed_history, "speed history"
+
+
+
 
     def moving(self):
 	if not numcar:
@@ -490,4 +540,8 @@ class App:
 	print 'this also does nothing'
 
 app = App(root)
+#app.__dict__.keys()
+#print vars(app).keys()
+
+#print app.maxvel
 root.mainloop()
