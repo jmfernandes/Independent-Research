@@ -4,18 +4,48 @@
 
 import random
 
+car_type = [1,2,3]
+
+Iden = []
+
+numbers = list(xrange(1,101))
+
+memory =[]
+
+
 class Car(object):
     """Defines a Car object with attributes position, speed, and g, where g is
 reserved to store the number of empty spaces ahead of the car.
     """
-    def __init__(self, position=0, speed=0):
+    def __init__(self, position=0, speed=0, identity=0,factor=0,type=0):
         self.position = position
         self.speed = abs(int(random.gauss(int(app.maxvel),2)))
 	#print type(random.gauss(int(app.maxvel),3))
 	#print abs(int(random.gauss(int(app.maxvel),2))), "heydhfsufad"
         self.g = 0
+	Iden.append(0)
+	self.identity= len(Iden)
+	ranting = random.randint(0,len(numbers))
+	#print memory, "memory 1"
+	#print ranting, "ranting"
+	while ranting in memory:
+		print "repeat"
+		ranting = random.randint(0,len(numbers))
+	else:
+		pass
+	memory.append(ranting)
+	print memory, "memory 2"
+	self.factor = numbers[memory[self.identity-1]-1]
+	typing = random.randint(1, 100)
+	if typing <= 10:
+		self.type = 1
+	elif typing >= 90:
+		self.type = 2
+	else:
+		self.type = 3
+
     def __str__(self):
-        return 'Position: %d, Speed: %d\nEmpty spaces ahead: %d' % (self.position, self.speed, self.g)
+        return 'Position: %d, Speed: %d\nEmpty spaces ahead: %d, Identity: %d, Factor: %d, Type: %d' % (self.position, self.speed, self.g, self.identity,self.factor,self.type)
     def reset(self, position, speed):
         """A slightly more convenient way to set the position and speed simultaneously.
         """
@@ -146,18 +176,42 @@ class Data(object):
 
 def update_and_move(car, lane, vmax, p, cc):
     """To be used only within other rules definitions. Sets the car's speed appropriately, then moves it."""
-    if car.speed > car.g:
+    #print car.factor, "factor!!!!!"
+    if car.speed > car.g: #stops cars from going through each other.
         car.speed = car.g
     if car.speed > vmax:
-	car.speed -= 1
+	slow_factor = random.randint(1, 100)
+	print slow_factor, "slow factor"
+	if car.type == 3:
+		if slow_factor <=50:
+			car.speed -=1 #regular cars slow down half of the time
+		else:
+			pass
+	elif car.type == 2:
+		if slow_factor <= 5:
+			car.speed -= 1 #fast cars don't slow down
+		elif slow_factor >= 90:
+			car.speed +=1
+		else:
+			pass
+	else:
+		car.speed -=1 #slow cars always slow down
     if car.speed < car.g and car.speed < vmax:
         car.speed += 1
-    if car.speed == vmax and cc:
-        prob = 0
-    else:
-        prob = p
-    if car.speed > 0 and random.randint(1, 100) <= 100*prob:
-        car.speed -= 1
+    if car.speed == vmax:
+	super_slow = random.randint(1, 100)
+	print super_slow, "super slow"
+	if super_slow <= car.factor:   #adds a probability of randomly slowing down.
+		car.speed -=1
+		print super_slow, "its lower!"
+	else:
+		pass
+    #if car.speed == vmax and cc:
+    #    prob = 0
+    #else:
+    #    prob = p
+    #if car.speed > 0 and random.randint(1, 100) <= 100*prob:
+    #    car.speed -= 1
     lane.move_car(car)
 
 def stca(data, lane, vmax, n=10, p=0.50, cc=False):
@@ -361,10 +415,10 @@ class App:
 	self.velocity_ent.pack()
 
 	## enter initial values
-	self.txt_ent.insert(0, "1")
-	self.size_ent.insert(0, "60")
-	self.time_ent.insert(0, "5")
-	self.velocity_ent.insert(0, "3")
+	self.txt_ent.insert(0, "10")
+	self.size_ent.insert(0, "30")
+	self.time_ent.insert(0, "10")
+	self.velocity_ent.insert(0, "6")
 	##
 
 	## create hover text
@@ -405,6 +459,10 @@ class App:
 
 
     def adding(self):
+	while Iden: #gets rid of the identity of each car
+		Iden.pop(0)
+	while memory:
+		memory.pop(0)
 	if not self.txt_ent.get():
 		print 'input the number of cars'
 		return
@@ -459,14 +517,15 @@ class App:
 	max_v = int(self.velocity_ent.get())
 	prob = self.spin.get()
 	prob_int = float(prob)
+	print prob
 	cruise = self.checkvar.get()
 	rad = self.var2.get()
 	if rad == 1:
-		stca(self.data,self.lane, max_v,duration,prob_int,cruise) ## run code to generate car history
+		stca(self.data,self.lane,max_v,duration,prob_int,cruise) ## run code to generate car history
 	elif rad == 2:
-		asep(self.data,self.lane, max_v,duration,prob_int,cruise)
+		asep(self.data,self.lane,max_v,duration,prob_int,cruise)
 	else:
-		ca184(self.data,self.lane, max_v,duration,cruise)
+		ca184(self.data,self.lane,max_v,duration,cruise)
 	self.pos = self.data.position_history
 	self.pos.sort()
 	for i in range(len(self.pos)):
@@ -476,12 +535,12 @@ class App:
 		col.append(rant)
 		self.canvas.create_rectangle(self.pos[i][0],50,self.pos[i][0]+10,60,fill=color[rant],tags=cars[i])
 	#check to make sure cars are obeying print self.data.position_history
-	for i in range(len(self.pos)): #this prints the last position - beware
-		print self.lane.carlist[i].position
-	print self.pos
+	#for i in range(len(self.pos)): #this prints the last position - beware
+	#	print self.lane.carlist[i].position
+	print self.pos, "position history"
 	#print self.lane.map # map also displays the last position of the cars. data.position_history is the only useful one
 	print self.data.speed_history, "speed history"
-
+	print self.lane.print_cars()
 
 
 
@@ -493,7 +552,7 @@ class App:
 		self.canvas.delete(cars[i])
 		self.canvas.create_rectangle(self.pos[i][0],50,self.pos[i][0]+10,60,fill=color[col[i]],tags=cars[i])
 	self.canvas.update() #this line very necessary to update original positions
-	ind = []
+	#ind = []
 	for i in range(len(self.pos[0])-1):
 		time.sleep(0.02)
 		xx = 0
@@ -511,12 +570,17 @@ class App:
 					#vel2 = (self.length*10 - self.pos[j][i])/10
 					#self.canvas.move(cars[j],vel2,0)
 					self.canvas.update()
-					if not ind:
-						pass
-					else:
-						ind.pop(0)
-					ind.append(j)
-					if xx ==1:
+					#if not ind:
+					#	pass
+					#else:
+					#	ind.pop(0)
+					#ind.append(j)
+					if xx <= 4:
+						time.sleep(0.01)
+						veloc3 = (self.length*10 - self.pos[j][i])/4.0
+						self.canvas.move(cars[j],veloc3,0)
+						self.canvas.update()
+					elif xx ==5:
 						#yy = 0
 						#while yy < 10:
 						#	yy = yy + 1
@@ -524,13 +588,17 @@ class App:
 						#	vel3 = (self.length*10 - self.pos[j][i])/10
 						#	self.canvas.move(cars[j],vel3,0)
 						#	self.canvas.update()
-						self.canvas.delete(cars[ind[0]])
-						self.canvas.create_rectangle(-10,50,0,60, fill=color[col[ind[0]]], tags=cars[ind[0]])
+						self.canvas.delete(cars[j])
+						self.canvas.create_rectangle(-10,50,0,60, fill=color[col[j]], tags=cars[j]) # using j instead of ind(0)
+						self.canvas.update()
+						time.sleep(0.005)
+						veloc = (self.pos[j][i+1]+10)/6.0
+						self.canvas.move(cars[j],veloc,0)
 						self.canvas.update()
 					else:
-						time.sleep(0.01)
-						veloc = (self.pos[ind[0]][i+1]+10)/9.0
-						self.canvas.move(cars[ind[0]],veloc,0)
+						time.sleep(0.005)
+						veloc = (self.pos[j][i+1]+10)/6.0
+						self.canvas.move(cars[j],veloc,0)
 						self.canvas.update()
 		self.canvas.update()
 	#print self.pos
