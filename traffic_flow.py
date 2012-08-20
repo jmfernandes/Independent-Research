@@ -29,12 +29,12 @@ reserved to store the number of empty spaces ahead of the car.
 	#print memory, "memory 1"
 	#print ranting, "ranting"
 	while ranting in memory:
-		print "repeat"
+		#print "repeat"
 		ranting = random.randint(0,len(numbers))
 	else:
 		pass
 	memory.append(ranting)
-	print memory, "memory 2"
+	#print memory, "memory 2"
 	self.factor = numbers[memory[self.identity-1]-1]
 	typing = random.randint(1, 100)
 	if typing <= 10:
@@ -177,11 +177,14 @@ class Data(object):
 def update_and_move(car, lane, vmax, p, cc):
     """To be used only within other rules definitions. Sets the car's speed appropriately, then moves it."""
     #print car.factor, "factor!!!!!"
-    if car.speed > car.g: #stops cars from going through each other.
-        car.speed = car.g
+    #if car.speed > car.g: #stops cars from going through each other.
+    #    car.speed = car.g
+    if car.speed == car.g*2:
+	print 'yoyoyoyo'
+	car.speed = int(round(car.g/2))
     if car.speed > vmax:
 	slow_factor = random.randint(1, 100)
-	print slow_factor, "slow factor"
+	#print slow_factor, "slow factor"
 	if car.type == 3:
 		if slow_factor <=50:
 			car.speed -=1 #regular cars slow down half of the time
@@ -189,9 +192,9 @@ def update_and_move(car, lane, vmax, p, cc):
 			pass
 	elif car.type == 2:
 		if slow_factor <= 5:
-			car.speed -= 1 #fast cars don't slow down
+			car.speed -= 1 #fast cars don't slow down often
 		elif slow_factor >= 90:
-			car.speed +=1
+			car.speed +=1 #fast cars have a chance of speeding up
 		else:
 			pass
 	else:
@@ -200,18 +203,32 @@ def update_and_move(car, lane, vmax, p, cc):
         car.speed += 1
     if car.speed == vmax:
 	super_slow = random.randint(1, 100)
-	print super_slow, "super slow"
-	if super_slow <= car.factor:   #adds a probability of randomly slowing down.
-		car.speed -=1
-		print super_slow, "its lower!"
+	#print super_slow, "super slow"
+	if car.type == 3:
+		pass #regular cars stay the speed limit
+	elif car.type == 2:
+		if super_slow >= 40:
+			car.speed +=1 #fast cars speed up
+		else:
+			pass
 	else:
-		pass
+		if super_slow <= 20:
+			car.speed -=1 #slow cars have a chance of slowing down
+		else:
+			pass	
+	#if super_slow <= car.factor:   #adds a probability of randomly slowing down.
+	#	car.speed -=1
+	#	print super_slow, "its lower!"
+	#else:
+	#	pass
     #if car.speed == vmax and cc:
     #    prob = 0
     #else:
     #    prob = p
     #if car.speed > 0 and random.randint(1, 100) <= 100*prob:
     #    car.speed -= 1
+    if car.speed > car.g: #stops cars from going through each other.
+        car.speed = car.g
     lane.move_car(car)
 
 def stca(data, lane, vmax, n=10, p=0.50, cc=False):
@@ -517,7 +534,7 @@ class App:
 	max_v = int(self.velocity_ent.get())
 	prob = self.spin.get()
 	prob_int = float(prob)
-	print prob
+	#print prob
 	cruise = self.checkvar.get()
 	rad = self.var2.get()
 	if rad == 1:
@@ -537,10 +554,10 @@ class App:
 	#check to make sure cars are obeying print self.data.position_history
 	#for i in range(len(self.pos)): #this prints the last position - beware
 	#	print self.lane.carlist[i].position
-	print self.pos, "position history"
+	#print self.pos, "position history"
 	#print self.lane.map # map also displays the last position of the cars. data.position_history is the only useful one
-	print self.data.speed_history, "speed history"
-	print self.lane.print_cars()
+	#print self.data.speed_history, "speed history"
+	#print self.lane.print_cars()
 
 
 
