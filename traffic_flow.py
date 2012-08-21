@@ -179,7 +179,7 @@ def update_and_move(car, lane, vmax, p, cc):
     #print car.factor, "factor!!!!!"
     #if car.speed > car.g: #stops cars from going through each other.
     #    car.speed = car.g
-    if car.speed == car.g*2:
+    if car.speed > car.g*2:
 	print 'yoyoyoyo'
 	car.speed = int(round(car.g/2))
     if car.speed > vmax:
