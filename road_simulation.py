@@ -35,8 +35,9 @@ class Car(object):
     """Defines a Car object with attributes position, speed, and g, where g is
 reserved to store the number of empty spaces ahead of the car.
     """
-    def __init__(self, position=0, speed=0, identity=0,factor=0,type=0):
+    def __init__(self, position=0, y_position=0 , speed=0, identity=0,factor=0,type=0):
         self.position = position
+	self.y_position = y_position
         self.speed = abs(int(random.gauss(int(app.maxvel),2)))
     	"""identity increases in value sequentially for each car (1,2,3,4), factor is a value from 1-100. No two cars have the same factor. Type is the car type 1,2, or 3"""
    	self.g = 0
@@ -73,7 +74,7 @@ reserved to store the number of empty spaces ahead of the car.
     	"""above code sets the type"""
 
     def __str__(self):
-        return 'Position: %d, Speed: %d\nEmpty spaces ahead: %d, Identity: %d, Factor: %g, Type: %d' % (self.position, self.speed, self.g, self.identity,self.factor,self.type)
+        return 'Position: %d, Lane: %d, Speed: %d\nEmpty spaces ahead: %d, Identity: %d, Factor: %g, Type: %d' % (self.position, self.y_position, self.speed, self.g, self.identity,self.factor,self.type)
     def reset(self, position, speed):
         """A slightly more convenient way to set the position and speed simultaneously.
         """
@@ -174,15 +175,18 @@ class Data(object):
     """A data-holding object which contains histories of each car's position and speed as well as the length of the lane and the number of cars on the lane."""
     def __init__(self):
         self.position_history = []
+	self.lane_history = []
         self.speed_history = []
         self.lane_length = 0
         self.number_of_cars = 0
     def build_position_history(self, lane):
         for car in lane.carlist:
             self.position_history.append([])
+	    self.lane_history.append([])
     def append_position_history(self, lane):
         for i in range(len(lane.carlist)):
             self.position_history[i].append(lane.carlist[i].position)
+	    self.lane_history[i].append(lane.carlist[i].y_position + lane.carlist[i].identity)
     def build_speed_history(self, lane):
         for car in lane.carlist:
             self.speed_history.append([])
@@ -550,6 +554,7 @@ class App:
 			self.pos.pop(0)
 			col.pop(0) 
 			vel.pop(0)
+			self.lanething.pop(0)
 			a = self.lane.carlist[0]
 			self.lane.remove_car(a)
 			for i in range(len(cars)):
@@ -589,7 +594,9 @@ class App:
 	else:
 		ca184(self.data,self.lane,max_v,duration,cruise)
 	self.pos = self.data.position_history
-	self.pos.sort()
+	#self.pos.sort()
+	self.lanething = self.data.lane_history
+	#self.lanething.sort()
 	for i in range(len(self.pos)):
 		self.pos[i] = [x * 10 for x in self.pos[i]]
 	for i in range(len(self.pos)):   #need to extract the first value of every list
@@ -602,8 +609,9 @@ class App:
 	#print self.pos, "position history"
 	#print self.lane.map # map also displays the last position of the cars. data.position_history is the only useful one
 	#print self.data.speed_history, "speed history"
-	######print self.lane.print_cars()
-        
+	print self.lane.print_cars()
+        print self.pos, "where am i"
+	print self.lanething, "I am here"
 
 
 
