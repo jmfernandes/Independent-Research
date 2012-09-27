@@ -12,24 +12,11 @@ numbers = list(xrange(1,1001))
 
 memory =[]
 
-tel = {'jack': 4098, 'sape': 4139}
-
 #######################################################################################
 
 class GetOutOfLoop( Exception ):
      pass
-     ineedthis = 5
 
-#########
-class numbersiwant:
-	def __init__(self,a):
-		self.goodnumber = a
-		print a, "a"
-
-numbersiwant(6)
-
-#print thesethings.goodnumber, "this is it"
-#########
 
 class Car(object):
     """Defines a Car object with attributes position, speed, and g, where g is
@@ -186,7 +173,7 @@ class Data(object):
     def append_position_history(self, lane):
         for i in range(len(lane.carlist)):
             self.position_history[i].append(lane.carlist[i].position)
-	    self.lane_history[i].append(lane.carlist[i].y_position + lane.carlist[i].identity)
+	    self.lane_history[i].append(lane.carlist[i].y_position)
     def build_speed_history(self, lane):
         for car in lane.carlist:
             self.speed_history.append([])
@@ -599,10 +586,12 @@ class App:
 	#self.lanething.sort()
 	for i in range(len(self.pos)):
 		self.pos[i] = [x * 10 for x in self.pos[i]]
+	for i in range(len(self.lanething)):
+		self.lanething[i] = [x * 10 for x in self.lanething[i]]
 	for i in range(len(self.pos)):   #need to extract the first value of every list
 		rant = random.randint(0,len(color)-1)
 		col.append(rant)
-		self.canvas.create_rectangle(self.pos[i][0],50,self.pos[i][0]+10,60,fill=color[rant],tags=cars[i])
+		self.canvas.create_rectangle(self.pos[i][0],self.lanething[i][0],self.pos[i][0]+10,self.lanething[i][0]+10,fill=color[rant],tags=cars[i])
 	#check to make sure cars are obeying print self.data.position_history
 	#for i in range(len(self.pos)): #this prints the last position - beware
 	#	print self.lane.carlist[i].position
