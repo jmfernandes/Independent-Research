@@ -101,9 +101,10 @@ class Lane(object):
             raise ValueError('Tried to put %d car%s in a lane that has %d empty space%s.' % (n, ns, self.map.count('_'), ss))
         for i in range(n):
             x = random.randint(0, self.length - 1)
+	    y = random.randint(1, 2)
             while True:
                 if self.map[x] == '_':
-                    self.add_car(Car(x))
+                    self.add_car(Car(x,y))
                     break
                 else:
                     x = random.randint(0, self.length - 1)
@@ -611,7 +612,7 @@ class App:
 		return
 	for i in range(len(self.pos)): #resets the rectangles to initial position
 		self.canvas.delete(cars[i])
-		self.canvas.create_rectangle(self.pos[i][0],50,self.pos[i][0]+10,60,fill=color[col[i]],tags=cars[i])
+		self.canvas.create_rectangle(self.pos[i][0],self.lanething[i][0],self.pos[i][0]+10,self.lanething[i][0]+10,fill=color[col[i]],tags=cars[i])
 	self.canvas.update() #this line very necessary to update original positions
 	#ind = []
 	for i in range(len(self.pos[0])-1):
@@ -650,7 +651,7 @@ class App:
 						#	self.canvas.move(cars[j],vel3,0)
 						#	self.canvas.update()
 						self.canvas.delete(cars[j])
-						self.canvas.create_rectangle(-10,50,0,60, fill=color[col[j]], tags=cars[j]) # using j instead of ind(0)
+						self.canvas.create_rectangle(-10, self.lanething[i][0],0,self.lanething[i][0]+10, fill=color[col[j]], tags=cars[j]) # using j instead of ind(0)
 						self.canvas.update()
 						time.sleep(0.005)
 						veloc = (self.pos[j][i+1]+10)/6.0
