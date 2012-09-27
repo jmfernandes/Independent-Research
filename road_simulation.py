@@ -26,7 +26,7 @@ reserved to store the number of empty spaces ahead of the car.
         self.position = position
 	self.y_position = y_position
         self.speed = abs(int(random.gauss(int(app.maxvel),2)))
-    	"""identity increases in value sequentially for each car (1,2,3,4), factor is a value from 1-100. No two cars have the same factor. Type is the car type 1,2, or 3"""
+    	"""identity increases in value sequentially for each car (1,2,3,4), factor is a value from 1-1000. No two cars have the same factor. Type is the car type 1,2, or 3"""
    	self.g = 0
     	Iden.append(0)
 	self.identity= len(Iden)
@@ -506,11 +506,6 @@ class App:
 
 
     def adding(self):
-	#thecars = Car()
-	#print thecars.breakingnum, "carssss"
-	#print GetOutOfLoop.ineedthis, "whawha"
-	#print thesethings.goodnumber, "this is it"
-	#print numbersiwant.goodnumber, "what is all this"
 	while Iden: 
 		Iden.pop(0)
 		"""gets rid of the tkinter identity of each car"""
@@ -572,7 +567,6 @@ class App:
 	max_v = int(self.velocity_ent.get())
 	prob = self.spin.get()
 	prob_int = float(prob)
-	#print prob
 	cruise = self.checkvar.get()
 	rad = self.var2.get()
 	if rad == 1:
@@ -651,7 +645,7 @@ class App:
 						#	self.canvas.move(cars[j],vel3,0)
 						#	self.canvas.update()
 						self.canvas.delete(cars[j])
-						self.canvas.create_rectangle(-10, self.lanething[i][0],0,self.lanething[i][0]+10, fill=color[col[j]], tags=cars[j]) # using j instead of ind(0)
+						self.canvas.create_rectangle(-10, self.lanething[j][0],0,self.lanething[j][0]+10, fill=color[col[j]], tags=cars[j]) # using j instead of ind(0)
 						self.canvas.update()
 						time.sleep(0.005)
 						veloc = (self.pos[j][i+1]+10)/6.0
