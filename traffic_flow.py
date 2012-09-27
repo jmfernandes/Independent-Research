@@ -8,10 +8,28 @@ car_type = [1,2,3]
 
 Iden = []
 
-numbers = list(xrange(1,101))
+numbers = list(xrange(1,1001))
 
 memory =[]
 
+tel = {'jack': 4098, 'sape': 4139}
+
+#######################################################################################
+
+class GetOutOfLoop( Exception ):
+     pass
+     ineedthis = 5
+
+#########
+class numbersiwant:
+	def __init__(self,a):
+		self.goodnumber = a
+		print a, "a"
+
+numbersiwant(6)
+
+#print thesethings.goodnumber, "this is it"
+#########
 
 class Car(object):
     """Defines a Car object with attributes position, speed, and g, where g is
@@ -20,22 +38,31 @@ reserved to store the number of empty spaces ahead of the car.
     def __init__(self, position=0, speed=0, identity=0,factor=0,type=0):
         self.position = position
         self.speed = abs(int(random.gauss(int(app.maxvel),2)))
-	#print type(random.gauss(int(app.maxvel),3))
-	#print abs(int(random.gauss(int(app.maxvel),2))), "heydhfsufad"
-        self.g = 0
-	Iden.append(0)
+    	"""identity increases in value sequentially for each car (1,2,3,4), factor is a value from 1-100. No two cars have the same factor. Type is the car type 1,2, or 3"""
+   	self.g = 0
+    	Iden.append(0)
 	self.identity= len(Iden)
+    	"""above code sets the identity"""
 	ranting = random.randint(0,len(numbers))
-	#print memory, "memory 1"
-	#print ranting, "ranting"
+	self.interation = [0]
 	while ranting in memory:
-		#print "repeat"
 		ranting = random.randint(0,len(numbers))
+		self.interation[0] = self.interation[0] +1
+		if self.interation[0] == 1200:
+			print "too many cars! only 1001 cars allowed"
+			#raise GetOutOfLoop
+			return
+			self.breakingnum = 1
+		else:
+			self.breakingnum = 2
+		"""makes it so that if too many cars are entered, the code doesn't look for an unused number forever"""
 	else:
 		pass
 	memory.append(ranting)
 	#print memory, "memory 2"
-	self.factor = numbers[memory[self.identity-1]-1]
+        self.factor = numbers[memory[self.identity-1]-1]/10.0
+	#print self.factor, "self"
+   	"""above code sets the factor"""
 	typing = random.randint(1, 100)
 	if typing <= 10:
 		self.type = 1
@@ -43,9 +70,10 @@ reserved to store the number of empty spaces ahead of the car.
 		self.type = 2
 	else:
 		self.type = 3
+    	"""above code sets the type"""
 
     def __str__(self):
-        return 'Position: %d, Speed: %d\nEmpty spaces ahead: %d, Identity: %d, Factor: %d, Type: %d' % (self.position, self.speed, self.g, self.identity,self.factor,self.type)
+        return 'Position: %d, Speed: %d\nEmpty spaces ahead: %d, Identity: %d, Factor: %g, Type: %d' % (self.position, self.speed, self.g, self.identity,self.factor,self.type)
     def reset(self, position, speed):
         """A slightly more convenient way to set the position and speed simultaneously.
         """
@@ -168,7 +196,7 @@ class Data(object):
 
 
 
-
+#######################################################################################
 
 
 
@@ -180,40 +208,47 @@ def update_and_move(car, lane, vmax, p, cc):
     #if car.speed > car.g: #stops cars from going through each other.
     #    car.speed = car.g
     if car.speed > car.g*2:
-	print 'yoyoyoyo'
+        #print 'yoyoyoyo'
 	car.speed = int(round(car.g/2))
     if car.speed > vmax:
 	slow_factor = random.randint(1, 100)
 	#print slow_factor, "slow factor"
 	if car.type == 3:
 		if slow_factor <=50:
-			car.speed -=1 #regular cars slow down half of the time
+			car.speed -=1  
+			"""regular cars slow down half of the time"""
 		else:
 			pass
 	elif car.type == 2:
 		if slow_factor <= 5:
-			car.speed -= 1 #fast cars don't slow down often
+			car.speed -= 1 
+			"""fast cars don't slow down often"""
 		elif slow_factor >= 90:
-			car.speed +=1 #fast cars have a chance of speeding up
+			car.speed +=1 
+			"""fast cars have a chance of speeding up"""
 		else:
 			pass
 	else:
-		car.speed -=1 #slow cars always slow down
+		car.speed -=1 
+		"""slow cars always slow down"""
     if car.speed < car.g and car.speed < vmax:
         car.speed += 1
     if car.speed == vmax:
 	super_slow = random.randint(1, 100)
 	#print super_slow, "super slow"
 	if car.type == 3:
-		pass #regular cars stay the speed limit
+		pass 
+		"""regular cars stay the speed limit"""
 	elif car.type == 2:
 		if super_slow >= 40:
-			car.speed +=1 #fast cars speed up
+			car.speed +=1 
+			"""fast cars speed up"""
 		else:
 			pass
 	else:
 		if super_slow <= 20:
-			car.speed -=1 #slow cars have a chance of slowing down
+			car.speed -=1 
+			"""slow cars have a chance of slowing down"""
 		else:
 			pass	
 	#if super_slow <= car.factor:   #adds a probability of randomly slowing down.
@@ -227,8 +262,9 @@ def update_and_move(car, lane, vmax, p, cc):
     #    prob = p
     #if car.speed > 0 and random.randint(1, 100) <= 100*prob:
     #    car.speed -= 1
-    if car.speed > car.g: #stops cars from going through each other.
+    if car.speed > car.g: 
         car.speed = car.g
+	"""stops cars from going through each other."""
     lane.move_car(car)
 
 def stca(data, lane, vmax, n=10, p=0.50, cc=False):
@@ -269,7 +305,7 @@ def asep(data, lane, vmax, n=20, p=0, cc=False):
 
 
 
-
+#######################################################################################
 
 
 
@@ -285,6 +321,8 @@ import time
 
 color = ['snow','gainsboro','linen','moccasin','cornsilk','ivory','cornsilk','seashell','honeydew','azure','green','red','blue','turquoise','cyan','aquamarine','chartreuse','yellow','khaki','gold','goldenrod','sienna','peru','burlywood','beige','tan','chocolate','firebrick','orange','coral','tomato','salmon','pink','maroon','magenta','violet','plum','orchid','purple','thistle','slateblue1','royalblue1','lavenderblush1','skyblue1','SpringGreen2','DarkOliveGreen4','IndianRed1']
 
+"""color is a list of words that are recognized by the tkinter package as colors. can be expanded to include a wider variety of colors."""
+
 col =[]
 numcar=[]
 cars = []
@@ -296,7 +334,7 @@ xy = []
 
 
 
-
+#######################################################################################
 
 
 class ToolTip(object):
@@ -348,7 +386,7 @@ def createToolTip(widget, text):
 
 
 
-
+#######################################################################################
 
 
 
@@ -470,14 +508,20 @@ class App:
 
 
 
-
+#######################################################################################
 
 
 
 
     def adding(self):
-	while Iden: #gets rid of the identity of each car
+	#thecars = Car()
+	#print thecars.breakingnum, "carssss"
+	#print GetOutOfLoop.ineedthis, "whawha"
+	#print thesethings.goodnumber, "this is it"
+	#print numbersiwant.goodnumber, "what is all this"
+	while Iden: 
 		Iden.pop(0)
+		"""gets rid of the tkinter identity of each car"""
 	while memory:
 		memory.pop(0)
 	if not self.txt_ent.get():
@@ -517,6 +561,7 @@ class App:
 		x = str(g)
 		s = 'mycar' + x
 		cars.append(s)
+    	"""removes any values from previous simulation is create road is clicked again."""
 	self.canvas.destroy()
 	## add lane
 	self.length = gg
@@ -557,11 +602,13 @@ class App:
 	#print self.pos, "position history"
 	#print self.lane.map # map also displays the last position of the cars. data.position_history is the only useful one
 	#print self.data.speed_history, "speed history"
-	#print self.lane.print_cars()
+	######print self.lane.print_cars()
+        
 
 
 
-    def moving(self):
+    def moving(self): 
+        """the visualization of the blocks moving"""
 	if not numcar:
 		print 'Create Road First'
 		return
@@ -623,6 +670,9 @@ class App:
 
     def reset(self):
 	print 'this also does nothing'
+
+
+#######################################################################################
 
 app = App(root)
 #app.__dict__.keys()
