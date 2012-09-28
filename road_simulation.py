@@ -129,8 +129,7 @@ class Lane(object):
             n = 0
         count = 0
 	whichlane = car.y_position
-	#print whichlane, car.identity, "ehkehfkjehfefefa"
-        while self.map[whichlane][n] == '_': ####the zero needs to be changed to whichlane, but the second list in map is nothing but '_'
+        while self.map[whichlane][n] == '_': 
             count += 1
             n += 1
             if n > self.length - 1:
@@ -202,15 +201,20 @@ class Data(object):
 
 def update_and_move(car, lane, vmax, p, cc):
     """To be used only within other rules definitions. Sets the car's speed appropriately, then moves it."""
-    #print car.factor, "factor!!!!!"
-    #if car.speed > car.g: #stops cars from going through each other.
-    #    car.speed = car.g
+    if random.randint(1,100) < 50: """this code switches cars to other lanes"""
+	if car.y_position == 0: 
+		print "its zero"
+		car.y_position = 1
+		lane.map_update(car)
+		lane.g_update_all
+	else:
+		car.y_position = 0
+		lane.map_update(car)
+		lane.g_update_all
     if car.speed > car.g*2:
-        #print 'yoyoyoyo'
 	car.speed = int(round(car.g/2))
     if car.speed > vmax:
 	slow_factor = random.randint(1, 100)
-	#print slow_factor, "slow factor"
 	if car.type == 3:
 		if slow_factor <=50:
 			car.speed -=1  
@@ -233,7 +237,6 @@ def update_and_move(car, lane, vmax, p, cc):
         car.speed += 1
     if car.speed == vmax:
 	super_slow = random.randint(1, 100)
-	#print super_slow, "super slow"
 	if car.type == 3:
 		pass 
 		"""regular cars stay the speed limit"""
@@ -248,18 +251,7 @@ def update_and_move(car, lane, vmax, p, cc):
 			car.speed -=1 
 			"""slow cars have a chance of slowing down"""
 		else:
-			pass	
-	#if super_slow <= car.factor:   #adds a probability of randomly slowing down.
-	#	car.speed -=1
-	#	print super_slow, "its lower!"
-	#else:
-	#	pass
-    #if car.speed == vmax and cc:
-    #    prob = 0
-    #else:
-    #    prob = p
-    #if car.speed > 0 and random.randint(1, 100) <= 100*prob:
-    #    car.speed -= 1
+			pass
     if car.speed > car.g: 
         car.speed = car.g
 	"""stops cars from going through each other."""
@@ -468,10 +460,10 @@ class App:
 	self.velocity_ent.pack()
 
 	## enter initial values
-	self.txt_ent.insert(0, "10")
-	self.size_ent.insert(0, "30")
-	self.time_ent.insert(0, "10")
-	self.velocity_ent.insert(0, "6")
+	self.txt_ent.insert(0, "1")
+	self.size_ent.insert(0, "10")
+	self.time_ent.insert(0, "11")
+	self.velocity_ent.insert(0, "1")
 	##
 
 	## create hover text
@@ -595,13 +587,6 @@ class App:
 		rant = random.randint(0,len(color)-1)
 		col.append(rant)
 		self.canvas.create_rectangle(self.pos[i][0],self.lanething[i][0],self.pos[i][0]+10,self.lanething[i][0]+10,fill=color[rant],tags=cars[i])
-	#check to make sure cars are obeying print self.data.position_history
-	#for i in range(len(self.pos)): #this prints the last position - beware
-	#	print self.lane.carlist[i].position
-	#print self.pos, "position history"
-	#print self.lane.map # map also displays the last position of the cars. data.position_history is the only useful one
-	#print self.data.speed_history, "speed history"
-	#print self.lane.print_cars()
         print self.pos, "where am i"
 	print self.lanething, "I am here"
 	#print self.lane.map
@@ -617,56 +602,43 @@ class App:
 		self.canvas.delete(cars[i])
 		self.canvas.create_rectangle(self.pos[i][0],self.lanething[i][0],self.pos[i][0]+10,self.lanething[i][0]+10,fill=color[col[i]],tags=cars[i])
 	self.canvas.update() #this line very necessary to update original positions
-	#ind = []
 	for i in range(len(self.pos[0])-1):
 		time.sleep(0.02)
 		xx = 0
 		self.canvas.update()
-		#x1=0
 		while xx < 10:
 			xx = xx + 1
 			time.sleep(0.05)
 			for j in range(len(self.pos)):
 				if self.pos[j][i+1] > self.pos[j][i]:
 					vel = (self.pos[j][i+1] - self.pos[j][i])/10
-					self.canvas.move(cars[j],vel,0)
+					yvel = (self.lanething[j][i+1] - self.lanething[j][i])/10
+					self.canvas.move(cars[j],vel,yvel)
 					self.canvas.update()
 				elif self.pos[j][i+1] < self.pos[j][i]:
-					#vel2 = (self.length*10 - self.pos[j][i])/10
-					#self.canvas.move(cars[j],vel2,0)
 					self.canvas.update()
-					#if not ind:
-					#	pass
-					#else:
-					#	ind.pop(0)
-					#ind.append(j)
 					if xx <= 4:
 						time.sleep(0.01)
 						veloc3 = (self.length*10 - self.pos[j][i])/4.0
-						self.canvas.move(cars[j],veloc3,0)
+						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/4.0
+						self.canvas.move(cars[j],veloc3,yvel)
 						self.canvas.update()
 					elif xx ==5:
-						#yy = 0
-						#while yy < 10:
-						#	yy = yy + 1
-						#	#time.sleep(0.015)
-						#	vel3 = (self.length*10 - self.pos[j][i])/10
-						#	self.canvas.move(cars[j],vel3,0)
-						#	self.canvas.update()
 						self.canvas.delete(cars[j])
-						self.canvas.create_rectangle(-10, self.lanething[j][0],0,self.lanething[j][0]+10, fill=color[col[j]], tags=cars[j]) # using j instead of ind(0)
+						self.canvas.create_rectangle(-10, self.lanething[j][i],0,self.lanething[j][i]+10, fill=color[col[j]], tags=cars[j]) # using j instead of ind(0)
 						self.canvas.update()
 						time.sleep(0.005)
 						veloc = (self.pos[j][i+1]+10)/6.0
-						self.canvas.move(cars[j],veloc,0)
+						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/6.0
+						self.canvas.move(cars[j],veloc,yvel)
 						self.canvas.update()
 					else:
 						time.sleep(0.005)
 						veloc = (self.pos[j][i+1]+10)/6.0
-						self.canvas.move(cars[j],veloc,0)
+						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/6.0
+						self.canvas.move(cars[j],veloc,yvel)
 						self.canvas.update()
 		self.canvas.update()
-	#print self.pos
 
 
     def reset(self):
