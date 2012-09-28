@@ -203,7 +203,7 @@ def update_and_move(car, lane, vmax, p, cc):
     """To be used only within other rules definitions. Sets the car's speed appropriately, then moves it."""
     """this code switches cars to other lanes"""
     print lane.map
-    if random.randint(1,100) < 100: 
+    if random.randint(1,100) < 0: 
 	if car.y_position == 0: #need to check to see if lane is occupied before switching
 		if lane.map[1][car.position] == 'n':
 			pass
@@ -589,11 +589,10 @@ class App:
 	self.pos = self.data.position_history
 	#self.pos.sort()
 	self.lanething = self.data.lane_history
-	#self.lanething.sort()
 	for i in range(len(self.pos)):
 		self.pos[i] = [x * 10 for x in self.pos[i]]
-	#for i in range(len(self.lanething)):
-	#	self.lanething[i] = [x * 10 for x in self.lanething[i]]
+	for i in range(len(self.lanething)):
+		self.lanething[i] = [x * 10 for x in self.lanething[i]]
 	for i in range(len(self.pos)):   #need to extract the first value of every list
 		rant = random.randint(0,len(color)-1)
 		col.append(rant)
@@ -623,7 +622,7 @@ class App:
 			for j in range(len(self.pos)):
 				if self.pos[j][i+1] > self.pos[j][i]:
 					vel = (self.pos[j][i+1] - self.pos[j][i])/10
-					yvel = (self.lanething[j][i+1] - self.lanething[j][i])/10
+					yvel = (self.lanething[j][i+1] - self.lanething[j][i])/10.0
 					print yvel, "yvel"
 					self.canvas.move(cars[j],vel,yvel)
 					self.canvas.update()
@@ -638,18 +637,20 @@ class App:
 						self.canvas.update()
 					elif xx ==5:
 						self.canvas.delete(cars[j])
-						self.canvas.create_rectangle(-10, self.lanething[j][i],0,self.lanething[j][i]+10, fill=color[col[j]], tags=cars[j]) # using j instead of ind(0)
+						self.canvas.create_rectangle(-10, self.lanething[j][i+1],0,self.lanething[j][i+1]+10, fill=color[col[j]], tags=cars[j]) # using j instead of ind(0)
 						self.canvas.update()
 						time.sleep(0.005)
 						veloc = (self.pos[j][i+1]+10)/6.0
-						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/6.0
+						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/10
+						print yvel, "yvel3"
 						self.canvas.move(cars[j],veloc,0)
 						self.canvas.update()
 					else:
 						time.sleep(0.005)
 						veloc = (self.pos[j][i+1]+10)/6.0
-						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/6.0
-						self.canvas.move(cars[j],veloc,yvel)
+						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/10
+						print yvel, "yvel4"
+						self.canvas.move(cars[j],veloc,0)
 						self.canvas.update()
 			else:
 				yvel = (self.lanething[j][i+1] - self.lanething[j][i])/10
