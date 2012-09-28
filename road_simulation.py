@@ -22,7 +22,7 @@ class Car(object):
     """Defines a Car object with attributes position, speed, and g, where g is
 reserved to store the number of empty spaces ahead of the car.
     """
-    def __init__(self, position=0, y_position=0 , speed=0, identity=0,factor=0,type=0):
+    def __init__(self, position=0, y_position=0 , speed=0, identity=0, factor=0, type=0):
         self.position = position
 	self.y_position = y_position
         self.speed = abs(int(random.gauss(int(app.maxvel),2)))
@@ -95,9 +95,8 @@ class Lane(object):
         """
         for car in self.carlist:
         	self.map_update(car)
-	whichlane = car.y_position
-        if n > self.map[whichlane].count('_'):
-            if self.map[whichlane].count('_') == 1: ss = ''
+        if n > self.map[car.y_position].count('_'):
+            if self.map[car.y_position].count('_') == 1: ss = ''
             else: ss = 's'
             if n == 1: ns = ''
             else: ns = 's'
@@ -105,12 +104,14 @@ class Lane(object):
         for i in range(n):
             x = random.randint(0, self.length - 1)
 	    y = random.randint(0, 1)
+	    print x,y, "coordinates"
             while True:
-                if self.map[whichlane][x] == '_':
+                if self.map[y][x] == '_':
                     self.add_car(Car(x,y))
                     break
                 else:
                     x = random.randint(0, self.length - 1)
+		    y = random.randint(0, 1)
 	    for car in self.carlist:
             	self.map_update(car)
     def map_update(self,car):
@@ -128,8 +129,7 @@ class Lane(object):
         else:
             n = 0
         count = 0
-	whichlane = car.y_position
-        while self.map[whichlane][n] == '_': 
+        while self.map[car.y_position][n] == '_': 
             count += 1
             n += 1
             if n > self.length - 1:
@@ -203,10 +203,10 @@ def update_and_move(car, lane, vmax, p, cc):
     """To be used only within other rules definitions. Sets the car's speed appropriately, then moves it."""
     """this code switches cars to other lanes"""
     print lane.map
-    if random.randint(1,100) < 00: 
+    if random.randint(1,100) < 100: 
 	if car.y_position == 0: #need to check to see if lane is occupied before switching
 		if lane.map[1][car.position] == 'n':
-			print car.position, "this is car position"
+			pass
 		else: 
 			lane.map[car.y_position][car.position] = '_'
 			car.y_position = 1
@@ -592,8 +592,8 @@ class App:
 	#self.lanething.sort()
 	for i in range(len(self.pos)):
 		self.pos[i] = [x * 10 for x in self.pos[i]]
-	for i in range(len(self.lanething)):
-		self.lanething[i] = [x * 10 for x in self.lanething[i]]
+	#for i in range(len(self.lanething)):
+	#	self.lanething[i] = [x * 10 for x in self.lanething[i]]
 	for i in range(len(self.pos)):   #need to extract the first value of every list
 		rant = random.randint(0,len(color)-1)
 		col.append(rant)
@@ -624,6 +624,7 @@ class App:
 				if self.pos[j][i+1] > self.pos[j][i]:
 					vel = (self.pos[j][i+1] - self.pos[j][i])/10
 					yvel = (self.lanething[j][i+1] - self.lanething[j][i])/10
+					print yvel, "yvel"
 					self.canvas.move(cars[j],vel,yvel)
 					self.canvas.update()
 				elif self.pos[j][i+1] < self.pos[j][i]:
@@ -632,6 +633,7 @@ class App:
 						time.sleep(0.01)
 						veloc3 = (self.length*10 - self.pos[j][i])/4.0
 						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/4.0
+						print yvel, "yvel2"
 						self.canvas.move(cars[j],veloc3,yvel)
 						self.canvas.update()
 					elif xx ==5:
@@ -641,7 +643,7 @@ class App:
 						time.sleep(0.005)
 						veloc = (self.pos[j][i+1]+10)/6.0
 						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/6.0
-						self.canvas.move(cars[j],veloc,yvel)
+						self.canvas.move(cars[j],veloc,0)
 						self.canvas.update()
 					else:
 						time.sleep(0.005)
@@ -649,6 +651,10 @@ class App:
 						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/6.0
 						self.canvas.move(cars[j],veloc,yvel)
 						self.canvas.update()
+			else:
+				yvel = (self.lanething[j][i+1] - self.lanething[j][i])/10
+				self.canvas.move(cars[j],0,yvel)
+				self.canvas.update()
 		self.canvas.update()
 
 
