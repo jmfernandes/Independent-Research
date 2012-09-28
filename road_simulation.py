@@ -73,58 +73,64 @@ class Lane(object):
     """
     def __init__(self, spaces=1):
         self.length = spaces
-        self.map = []   # uses '_' to represent an empty space, 'n' to represent a space with a car in it.
+        self.map = [[],[]]   # uses '_' to represent an empty space, 'n' to represent a space with a car in it.
         self.carlist = []
         for i in range(self.length):
-            self.map.append('_')
+            self.map[0].append('_')
+	    self.map[1].append('_')
     def __str__(self):
         return ' '.join(self.map)
     def add_car(self, car):
         """Adds the specified instance 'car' to the lane."""
         if car not in self.carlist:
             self.carlist.append(car)
-        self.map_update()
+        self.map_update(car)
     def remove_car(self, car):
         """Removes the specified instance 'car' from the lane."""
         if car in self.carlist:
             self.carlist.remove(car)
-        self.map_update()
-    def populate(self, n):
+        self.map_update(car)
+    def populate(self,car, n):
         """Adds n cars to the lane in random positions.
         """
-        self.map_update()
-        if n > self.map.count('_'):
-            if self.map.count('_') == 1: ss = ''
+        for car in self.carlist:
+        	self.map_update(car)
+	whichlane = car.y_position
+        if n > self.map[whichlane].count('_'):
+            if self.map[whichlane].count('_') == 1: ss = ''
             else: ss = 's'
             if n == 1: ns = ''
             else: ns = 's'
-            raise ValueError('Tried to put %d car%s in a lane that has %d empty space%s.' % (n, ns, self.map.count('_'), ss))
+            raise ValueError('Tried to put %d car%s in a lane that has %d empty space%s.' % (n, ns, self.map[0].count('_'), ss))
         for i in range(n):
             x = random.randint(0, self.length - 1)
-	    y = random.randint(1, 2)
+	    y = random.randint(0, 1)
             while True:
-                if self.map[x] == '_':
+                if self.map[whichlane][x] == '_':
                     self.add_car(Car(x,y))
                     break
                 else:
                     x = random.randint(0, self.length - 1)
-            self.map_update()
-    def map_update(self):
+	    for car in self.carlist:
+            	self.map_update(car)
+    def map_update(self,car):
         """Updates the map list to reflect changes in car positions."""
         for spot in range(self.length):
-            self.map[spot] = '_'
+            self.map[car.y_position][spot] = '_'
         for car in self.carlist:
-            self.map[car.position] = 'n'
+            self.map[car.y_position][car.position] = 'n'
     def g_update_car(self, car):
         """Finds and sets the appropriate g value for a specific car instance.
         """
-        self.map_update()
+        self.map_update(car)
         if car.position != self.length - 1:
             n = car.position + 1
         else:
             n = 0
         count = 0
-        while self.map[n] == '_':
+	whichlane = car.y_position
+	#print whichlane, car.identity, "ehkehfkjehfefefa"
+        while self.map[whichlane][n] == '_': ####the zero needs to be changed to whichlane, but the second list in map is nothing but '_'
             count += 1
             n += 1
             if n > self.length - 1:
@@ -562,7 +568,8 @@ class App:
 	for i in range(1,self.length+1):
 		self.canvas.create_line(i*10,0,i*10,100,dash=(3,6))
 	##
-	self.lane.populate(h)
+	car = Car()
+	self.lane.populate(car,h)
 	duration = kk
 	max_v = int(self.velocity_ent.get())
 	prob = self.spin.get()
@@ -575,6 +582,7 @@ class App:
 		asep(self.data,self.lane,max_v,duration,prob_int,cruise)
 	else:
 		ca184(self.data,self.lane,max_v,duration,cruise)
+	print self.lane.map, "note that this is after all the cars move"
 	self.pos = self.data.position_history
 	#self.pos.sort()
 	self.lanething = self.data.lane_history
@@ -593,9 +601,10 @@ class App:
 	#print self.pos, "position history"
 	#print self.lane.map # map also displays the last position of the cars. data.position_history is the only useful one
 	#print self.data.speed_history, "speed history"
-	print self.lane.print_cars()
+	#print self.lane.print_cars()
         print self.pos, "where am i"
 	print self.lanething, "I am here"
+	#print self.lane.map
 
 
 
