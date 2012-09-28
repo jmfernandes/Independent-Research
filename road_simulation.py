@@ -201,16 +201,25 @@ class Data(object):
 
 def update_and_move(car, lane, vmax, p, cc):
     """To be used only within other rules definitions. Sets the car's speed appropriately, then moves it."""
-    if random.randint(1,100) < 50: """this code switches cars to other lanes"""
-	if car.y_position == 0: 
-		print "its zero"
-		car.y_position = 1
-		lane.map_update(car)
-		lane.g_update_all
+    """this code switches cars to other lanes"""
+    print lane.map
+    if random.randint(1,100) < 00: 
+	if car.y_position == 0: #need to check to see if lane is occupied before switching
+		if lane.map[1][car.position] == 'n':
+			print car.position, "this is car position"
+		else: 
+			lane.map[car.y_position][car.position] = '_'
+			car.y_position = 1
+			lane.map_update(car)
+			lane.g_update_all
 	else:
-		car.y_position = 0
-		lane.map_update(car)
-		lane.g_update_all
+		if lane.map[0][car.position] == 'n':
+			pass
+		else:
+			lane.map[car.y_position][car.position] = '_'
+			car.y_position = 0
+			lane.map_update(car)
+			lane.g_update_all
     if car.speed > car.g*2:
 	car.speed = int(round(car.g/2))
     if car.speed > vmax:
@@ -265,6 +274,8 @@ def stca(data, lane, vmax, n=10, p=0.50, cc=False):
     data.update_number(lane)
     for i in range(n):
         lane.g_update_all()
+	#data.append_position_history(lane)
+        #data.append_speed_history(lane)
         for car in lane.carlist:
             update_and_move(car, lane, vmax, p, cc)
         #this is where you want to grab data for graphs, animation, etc.
