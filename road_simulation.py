@@ -12,6 +12,8 @@ numbers = list(xrange(1,1001))
 
 memory =[]
 
+globvar = 0
+
 #######################################################################################
 
 class GetOutOfLoop( Exception ):
@@ -73,8 +75,12 @@ class Lane(object):
     """
     def __init__(self, spaces=1):
         self.length = spaces
-        self.map = [[],[]]   # uses '_' to represent an empty space, 'n' to represent a space with a car in it.
-        self.carlist = []
+	self.map = []
+	print globvar, "globvar"
+	for i in range(2):
+		self.map.append([])
+        """range(2) needs to be fixed so the 2 is gotten from user input"""
+	self.carlist = []
         for i in range(self.length):
             self.map[0].append('_')
 	    self.map[1].append('_')
@@ -103,7 +109,7 @@ class Lane(object):
             raise ValueError('Tried to put %d car%s in a lane that has %d empty space%s.' % (n, ns, (self.map[0].count('_'))+(self.map[0].count('_')), ss))
         for i in range(n):
             x = random.randint(0, self.length - 1)
-	    y = random.randint(0, 1)
+	    y = random.randint(0, len(self.map)-1)
 	    print x,y, "coordinates"
             while True:
                 if self.map[y][x] == '_':
@@ -111,7 +117,7 @@ class Lane(object):
                     break
                 else:
                     x = random.randint(0, self.length - 1)
-		    y = random.randint(0, 1)
+		    y = random.randint(0, len(self.map)-1)
 	    for car in self.carlist:
             	self.map_update(car)
     def map_update(self,car):
@@ -446,8 +452,8 @@ class App:
 	selection = "traffic simulation in " + str(mode[self.var2.get()]) + " mode"
 	self.label.config(text = selection, bg = "grey",bd = 1, relief = SUNKEN)
 
-	#Label(frame, text="probability that drivers will slow down").pack(side=TOP)
-	sim = "probability that drivers will slow down:"
+	#Label(frame, text="probability that driver slow down").pack(side=TOP)
+	sim = "probability of drivers slowing down:"
 	self.label2.config(text = sim)
 	self.spin = Spinbox(frame, from_=0, to=1,increment = .1, width = 3)
 	self.spin.pack(side=TOP)
@@ -462,6 +468,10 @@ class App:
 	self.size_ent = Entry(centerframe)
 	self.size_ent.pack()
 
+	Label(centerframe, text="enter the number of lanes").pack(side=TOP)
+	self.size_lane = Entry(centerframe)
+	self.size_lane.pack()
+
 	Label(centerframe, text="enter the duration").pack(side=TOP)
 	self.time_ent = Entry(centerframe)
 	self.time_ent.pack()
@@ -473,6 +483,7 @@ class App:
 	## enter initial values
 	self.txt_ent.insert(0, "1")
 	self.size_ent.insert(0, "10")
+	self.size_lane.insert(0,"2")
 	self.time_ent.insert(0, "11")
 	self.velocity_ent.insert(0, "1")
 	##
@@ -496,8 +507,12 @@ class App:
 	#self.create_size = Button(frame, text="Length", command=self.lanesize)
         #self.create_size.pack(side=LEFT)
 
-
+	
 	self.maxvel = self.velocity_ent.get()
+
+    def set_globvar_to_one():
+    	global globvar    # Needed to modify global copy of globvar
+    	globvar = 1
 
     #def cb(self):
     #    print "variable is", self.var.get()
@@ -666,8 +681,4 @@ class App:
 #######################################################################################
 
 app = App(root)
-#app.__dict__.keys()
-#print vars(app).keys()
-
-#print app.maxvel
 root.mainloop()
