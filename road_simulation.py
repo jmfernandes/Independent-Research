@@ -49,9 +49,7 @@ reserved to store the number of empty spaces ahead of the car.
 	else:
 		pass
 	memory.append(ranting)
-	#print memory, "memory 2"
         self.factor = numbers[memory[self.identity-1]-1]/10.0
-	#print self.factor, "self"
    	"""above code sets the factor"""
 	typing = random.randint(1, 100)
 	if typing <= 10:
@@ -75,12 +73,8 @@ class Lane(object):
     """
     def __init__(self, spaces=1):
         self.length = spaces
-	#self.map = []
         """range(2) needs to be fixed so the 2 is gotten from user input"""
 	self.carlist = []
-        #for i in range(self.length):
-        #    self.map[0].append('_')
-	#    self.map[1].append('_')
     def get_variable(self):
 	a = int(app.size_lane.get())
 	return a
@@ -120,8 +114,6 @@ class Lane(object):
         for i in range(n):
             x = random.randint(0, self.length - 1)
 	    y = random.randint(0, len(self.map)-1)
-	    print len(self.map), "mao"
-	    print x,y, "coordinates"
             while True:
                 if self.map[y][x] == '_':
                     self.add_car(Car(x,y))
@@ -240,24 +232,6 @@ def update_and_move(car, lane, vmax, p, cc):
     			car.y_position -= 1
     			lane.map_update(car)
     			lane.g_update_all
-    #print lane.map
-    #if random.randint(1,100) < 100: 
-    # 	if car.y_position == 0: #need to check to see if lane is occupied before switching
-    #		if lane.map[1][car.position] == 'n':
-    #			pass
-    #		else: 
-    #			lane.map[car.y_position][car.position] = '_'
-    #			car.y_position = 1
-    #			lane.map_update(car)
-    #			lane.g_update_all
-    #	else:
-    #		if lane.map[0][car.position] == 'n':
-    #			pass
-    #		else:
-    #			lane.map[car.y_position][car.position] = '_'
-    #			car.y_position = 0
-    #			lane.map_update(car)
-    #			lane.g_update_all
     if car.speed > car.g*2:
 	car.speed = int(round(car.g/2))
     if car.speed > vmax:
@@ -312,12 +286,9 @@ def stca(data, lane, vmax, n=10, p=0.50, cc=False):
     data.update_number(lane)
     for i in range(n):
         lane.g_update_all()
-	#data.append_position_history(lane)
-        #data.append_speed_history(lane)
         for car in lane.carlist:
             update_and_move(car, lane, vmax, p, cc)
         #this is where you want to grab data for graphs, animation, etc.
-        #print lane
         data.append_position_history(lane)
         data.append_speed_history(lane)
     lane.g_update_all()
@@ -336,7 +307,6 @@ def asep(data, lane, vmax, n=20, p=0, cc=False):
         car = random.choice(lane.carlist)
         update_and_move(car, lane, vmax, p, cc)
         #this is where you want to grab data for graphs, animation, etc.
-        #print lane
         data.append_position_history(lane)
         data.append_speed_history(lane)
         lane.g_update_all()
@@ -439,15 +409,16 @@ class App:
 	self.lane= Lane(self.length)
 	self.data = Data()
 	self.data.build_position_history(self.lane)
-	self.canvas = Canvas(root,bg="grey", height=100, width=self.length*10,)
 	self.DefClr = root.cget("bg")
+	self.canvas = Canvas(root,bg="grey", height=100, width=self.length*10,)
+	self.canvas_blank = Canvas(root,bg=self.DefClr, height=10, width=self.length*10)
+	self.canvas_blank.pack()
 	self.canvas.pack()
 
 	self.canvas.delete(ALL)
 	self.canvas.configure(background=self.DefClr)
 	self.lane = Lane(0)
 
-	#root.geometry("650x300")
 	self.topframe = Frame(root)
 	self.topframe.pack(side=TOP,expand=YES)
 	otherframe = Frame(root)
@@ -484,7 +455,6 @@ class App:
 	selection = "traffic simulation in " + str(mode[self.var2.get()]) + " mode"
 	self.label.config(text = selection, bg = "grey",bd = 1, relief = SUNKEN)
 
-	#Label(frame, text="probability that driver slow down").pack(side=TOP)
 	sim = "probability of drivers slowing down:"
 	self.label2.config(text = sim)
 	self.spin = Spinbox(frame, from_=0, to=1,increment = .1, width = 3)
@@ -546,9 +516,6 @@ class App:
     	global globvar    # Needed to modify global copy of globvar
     	globvar = 1
 
-    #def cb(self):
-    #    print "variable is", self.var.get()
-
     def sel(self):
    	selection = "traffic simulation in " + str(mode[self.var2.get()]) + " mode"
 	self.label.config(text = selection)
@@ -607,16 +574,10 @@ class App:
 		cars.append(s)
     	"""removes any values from previous simulation is create road is clicked again."""
 	self.canvas.destroy()
+	self.canvas_blank.destroy()
 	## add lane
 	self.length = gg
 	self.lane= Lane(self.length)
-	self.canvas = Canvas(self.topframe,bg="grey", height=100, width=self.length*10)
-	#gw = .29 
-	#self.canvas.place(relx=gw,rely=0)
-	self.canvas.update()
-	self.canvas.pack()
-	for i in range(1,self.length+1):
-		self.canvas.create_line(i*10,0,i*10,100,dash=(3,6))
 	##
 	car = Car()
 	self.lane.populate(car,h)
@@ -632,6 +593,17 @@ class App:
 		asep(self.data,self.lane,max_v,duration,prob_int,cruise)
 	else:
 		ca184(self.data,self.lane,max_v,duration,cruise)
+	self.canvas_blank = Canvas(self.topframe,bg=self.DefClr, height=10, width=self.length*10)
+	"""canvas_blank adds a blank space so the traffic sim isn't up against the edge"""
+	self.canvas = Canvas(self.topframe,bg="grey", height=(len(self.lane.map))*10, width=self.length*10)
+	self.canvas_blank.update()
+	self.canvas_blank.pack()
+	self.canvas.update()
+	self.canvas.pack()
+	for i in range(1,self.length+1):
+		self.canvas.create_line(i*10,0,i*10,(len(self.lane.map))*10,dash=(2,2))
+	for i in range(1,len(self.lane.map)+1):
+		self.canvas.create_line(0,i*10,100,i*10,dash=(1,1))
 	print self.lane.map, "note that this is after all the cars move"
 	self.pos = self.data.position_history
 	#self.pos.sort()
@@ -670,7 +642,6 @@ class App:
 				if self.pos[j][i+1] > self.pos[j][i]:
 					vel = (self.pos[j][i+1] - self.pos[j][i])/10
 					yvel = (self.lanething[j][i+1] - self.lanething[j][i])/10
-					#print yvel, "yvel"
 					self.canvas.move(cars[j],vel,yvel)
 					self.canvas.update()
 				elif self.pos[j][i+1] < self.pos[j][i]:
@@ -679,7 +650,6 @@ class App:
 						time.sleep(0.01)
 						veloc3 = (self.length*10 - self.pos[j][i])/4.0
 						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/4.0
-						#print yvel, "yvel2"
 						self.canvas.move(cars[j],veloc3,yvel)
 						self.canvas.update()
 					elif xx ==5:
@@ -689,14 +659,12 @@ class App:
 						time.sleep(0.005)
 						veloc = (self.pos[j][i+1]+10)/6.0
 						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/6.0
-						#print yvel, "yvel3"
 						self.canvas.move(cars[j],veloc,yvel)
 						self.canvas.update()
 					else:
 						time.sleep(0.005)
 						veloc = (self.pos[j][i+1]+10)/6.0
 						yvel = (self.lanething[j][i+1] - self.lanething[j][i])/6.0
-						#print yvel, "yvel4"
 						self.canvas.move(cars[j],veloc,yvel)
 						self.canvas.update()
 				else:
