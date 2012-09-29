@@ -75,15 +75,18 @@ class Lane(object):
     """
     def __init__(self, spaces=1):
         self.length = spaces
-	self.map = []
-	print globvar, "globvar"
-	for i in range(2):
-		self.map.append([])
+	#self.map = []
+	#print globvar, "globvar"
+	#for i in range(2):
+	#f	self.map.append([])
         """range(2) needs to be fixed so the 2 is gotten from user input"""
 	self.carlist = []
-        for i in range(self.length):
-            self.map[0].append('_')
-	    self.map[1].append('_')
+        #for i in range(self.length):
+        #    self.map[0].append('_')
+	#    self.map[1].append('_')
+    def get_variable(self):
+	a = int(app.size_lane.get())
+	return a
     def __str__(self):
         return ' '.join(self.map)
     def add_car(self, car):
@@ -99,6 +102,13 @@ class Lane(object):
     def populate(self,car, n):
         """Adds n cars to the lane in random positions.
         """
+	lane_size_variable = self.get_variable()
+	self.map = []
+	for i in range(lane_size_variable):
+		self.map.append([])
+        for i in range(self.length):
+            self.map[0].append('_')
+	    self.map[1].append('_')
         for car in self.carlist:
         	self.map_update(car)
         if n > self.map[0].count('_') + self.map[1].count('_'):
