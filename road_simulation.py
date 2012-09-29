@@ -95,12 +95,12 @@ class Lane(object):
         """
         for car in self.carlist:
         	self.map_update(car)
-        if n > self.map[car.y_position].count('_'):
+        if n > self.map[0].count('_') + self.map[1].count('_'):
             if self.map[car.y_position].count('_') == 1: ss = ''
             else: ss = 's'
             if n == 1: ns = ''
             else: ns = 's'
-            raise ValueError('Tried to put %d car%s in a lane that has %d empty space%s.' % (n, ns, self.map[0].count('_'), ss))
+            raise ValueError('Tried to put %d car%s in a lane that has %d empty space%s.' % (n, ns, (self.map[0].count('_'))+(self.map[0].count('_')), ss))
         for i in range(n):
             x = random.randint(0, self.length - 1)
 	    y = random.randint(0, 1)
