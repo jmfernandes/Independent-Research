@@ -76,9 +76,6 @@ class Lane(object):
     def __init__(self, spaces=1):
         self.length = spaces
 	#self.map = []
-	#print globvar, "globvar"
-	#for i in range(2):
-	#f	self.map.append([])
         """range(2) needs to be fixed so the 2 is gotten from user input"""
 	self.carlist = []
         #for i in range(self.length):
@@ -107,19 +104,23 @@ class Lane(object):
 	for i in range(lane_size_variable):
 		self.map.append([])
         for i in range(self.length):
-            self.map[0].append('_')
-	    self.map[1].append('_')
+		for j in range(len(self.map)):
+            		self.map[j].append('_')
         for car in self.carlist:
         	self.map_update(car)
-        if n > self.map[0].count('_') + self.map[1].count('_'):
+	empty_space_count = 0
+	for i in range(len(self.map)):
+		empty_space_count += self.map[i].count('_')
+        if n > empty_space_count:
             if self.map[car.y_position].count('_') == 1: ss = ''
             else: ss = 's'
             if n == 1: ns = ''
             else: ns = 's'
-            raise ValueError('Tried to put %d car%s in a lane that has %d empty space%s.' % (n, ns, (self.map[0].count('_'))+(self.map[0].count('_')), ss))
+            raise ValueError('Tried to put %d car%s in a lane that has %d empty space%s.' % (n, ns, empty_space_count, ss))
         for i in range(n):
             x = random.randint(0, self.length - 1)
 	    y = random.randint(0, len(self.map)-1)
+	    print len(self.map), "mao"
 	    print x,y, "coordinates"
             while True:
                 if self.map[y][x] == '_':
