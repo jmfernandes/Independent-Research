@@ -219,24 +219,45 @@ class Data(object):
 def update_and_move(car, lane, vmax, p, cc):
     """To be used only within other rules definitions. Sets the car's speed appropriately, then moves it."""
     """this code switches cars to other lanes"""
-    print lane.map
     if random.randint(1,100) < 100: 
-	if car.y_position == 0: #need to check to see if lane is occupied before switching
-		if lane.map[1][car.position] == 'n':
+	if random.randint(1,100) < 50:
+		if car.y_position == (len(lane.map)-1):
 			pass
-		else: 
-			lane.map[car.y_position][car.position] = '_'
-			car.y_position = 1
-			lane.map_update(car)
-			lane.g_update_all
-	else:
-		if lane.map[0][car.position] == 'n':
+		elif lane.map[car.y_position+1][car.position] == 'n':
 			pass
 		else:
 			lane.map[car.y_position][car.position] = '_'
-			car.y_position = 0
-			lane.map_update(car)
-			lane.g_update_all
+    			car.y_position += 1
+    			lane.map_update(car)
+    			lane.g_update_all
+	else: 
+		if car.y_position == 0:
+			pass
+		elif lane.map[car.y_position-1][car.position] == 'n':
+			pass
+		else:
+			lane.map[car.y_position][car.position] = '_'
+    			car.y_position -= 1
+    			lane.map_update(car)
+    			lane.g_update_all
+    #print lane.map
+    #if random.randint(1,100) < 100: 
+    # 	if car.y_position == 0: #need to check to see if lane is occupied before switching
+    #		if lane.map[1][car.position] == 'n':
+    #			pass
+    #		else: 
+    #			lane.map[car.y_position][car.position] = '_'
+    #			car.y_position = 1
+    #			lane.map_update(car)
+    #			lane.g_update_all
+    #	else:
+    #		if lane.map[0][car.position] == 'n':
+    #			pass
+    #		else:
+    #			lane.map[car.y_position][car.position] = '_'
+    #			car.y_position = 0
+    #			lane.map_update(car)
+    #			lane.g_update_all
     if car.speed > car.g*2:
 	car.speed = int(round(car.g/2))
     if car.speed > vmax:
