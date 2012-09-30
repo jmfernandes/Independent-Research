@@ -24,7 +24,7 @@ class Car(object):
     """Defines a Car object with attributes position, speed, and g, where g is
 reserved to store the number of empty spaces ahead of the car.
     """
-    def __init__(self, position=0, y_position=0 , speed=0, identity=0, factor=0, type=0):
+    def __init__(self, position=0, y_position=0, speed=0, identity=0, factor=0, type=0):
         self.position = position
 	self.y_position = y_position
         self.speed = abs(int(random.gauss(int(app.maxvel),2)))
@@ -73,7 +73,6 @@ class Lane(object):
     """
     def __init__(self, spaces=1):
         self.length = spaces
-        """range(2) needs to be fixed so the 2 is gotten from user input"""
 	self.carlist = []
     def get_variable(self):
 	a = int(app.size_lane.get())
@@ -90,7 +89,7 @@ class Lane(object):
         if car in self.carlist:
             self.carlist.remove(car)
         self.map_update(car)
-    def populate(self,car, n):
+    def populate(self,car,n):
         """Adds n cars to the lane in random positions.
         """
 	lane_size_variable = self.get_variable()
@@ -112,9 +111,15 @@ class Lane(object):
             else: ns = 's'
             raise ValueError('Tried to put %d car%s in a lane that has %d empty space%s.' % (n, ns, empty_space_count, ss))
         for i in range(n):
+	    uuu = 0
             x = random.randint(0, self.length - 1)
 	    y = random.randint(0, len(self.map)-1)
+	    print self.map, "map"
             while True:
+		#print x,y, "coords"
+		print self.map[y][x], "map"
+		uuu += 1
+		print uuu, "u"
                 if self.map[y][x] == '_':
                     self.add_car(Car(x,y))
                     break
@@ -123,6 +128,7 @@ class Lane(object):
 		    y = random.randint(0, len(self.map)-1)
 	    for car in self.carlist:
             	self.map_update(car)
+	    print self.map, "map2"
     def map_update(self,car):
         """Updates the map list to reflect changes in car positions."""
         for spot in range(self.length):
@@ -286,6 +292,8 @@ def stca(data, lane, vmax, n=10, p=0.50, cc=False):
     data.update_number(lane)
     for i in range(n):
         lane.g_update_all()
+	#data.append_position_history(lane)
+        #data.append_speed_history(lane)
         for car in lane.carlist:
             update_and_move(car, lane, vmax, p, cc)
         #this is where you want to grab data for graphs, animation, etc.
@@ -581,6 +589,7 @@ class App:
 	##
 	car = Car()
 	self.lane.populate(car,h)
+	#print self.lane.map
 	duration = kk
 	max_v = int(self.velocity_ent.get())
 	prob = self.spin.get()
@@ -593,6 +602,7 @@ class App:
 		asep(self.data,self.lane,max_v,duration,prob_int,cruise)
 	else:
 		ca184(self.data,self.lane,max_v,duration,cruise)
+	#print self.lane.map
 	self.canvas_blank = Canvas(self.topframe,bg=self.DefClr, height=10, width=self.length*10)
 	"""canvas_blank adds a blank space so the traffic sim isn't up against the edge"""
 	self.canvas = Canvas(self.topframe,bg="grey", height=(len(self.lane.map))*10, width=self.length*10)
@@ -603,8 +613,8 @@ class App:
 	for i in range(1,self.length+1):
 		self.canvas.create_line(i*10,0,i*10,(len(self.lane.map))*10,dash=(2,2))
 	for i in range(1,len(self.lane.map)+1):
-		self.canvas.create_line(0,i*10,100,i*10,dash=(1,1))
-	print self.lane.map, "note that this is after all the cars move"
+		self.canvas.create_line(0,i*10,self.length*10,i*10,dash=(1,1))
+	#print self.lane.map, "note that this is after all the cars move"
 	self.pos = self.data.position_history
 	#self.pos.sort()
 	self.lanething = self.data.lane_history
