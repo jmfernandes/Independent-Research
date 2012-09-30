@@ -129,6 +129,8 @@ class Lane(object):
 	    for car in self.carlist:
             	self.map_update(car)
 	    print self.map, "map2"
+	    #self.print_cars()
+	    print self.car_positions()
     def map_update(self,car):
         """Updates the map list to reflect changes in car positions."""
         for spot in range(self.length):
@@ -164,7 +166,7 @@ class Lane(object):
         """Returns a list containing the position of each car in carlist."""
         l = []
         for car in self.carlist:
-            l.append(car.position)
+            l.append([car.position,car.y_position])
         return l
     def car_speeds(self):
         """Returns a list containing the speed of each car in carlist."""
