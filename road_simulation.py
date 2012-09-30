@@ -24,8 +24,8 @@ class Car(object):
     """Defines a Car object with attributes position, speed, and g, where g is
 reserved to store the number of empty spaces ahead of the car.
     """
-    def __init__(self, position=0, y_position=0, speed=0, identity=0, factor=0, type=0):
-        self.position = position
+    def __init__(self, x_position=0, y_position=0, speed=0, identity=0, factor=0, type=0):
+        self.x_position = x_position
 	self.y_position = y_position
         self.speed = abs(int(random.gauss(int(app.maxvel),2)))
     	"""identity increases in value sequentially for each car (1,2,3,4), factor is a value from 1-1000. No two cars have the same factor. Type is the car type 1,2, or 3"""
@@ -61,12 +61,16 @@ reserved to store the number of empty spaces ahead of the car.
     	"""above code sets the type"""
 
     def __str__(self):
-        return 'Position: %d, Lane: %d, Speed: %d\nEmpty spaces ahead: %d, Identity: %d, Factor: %g, Type: %d' % (self.position, self.y_position, self.speed, self.g, self.identity,self.factor,self.type)
-    def reset(self, position, speed):
+        return 'Position: %d, Lane: %d, Speed: %d\nEmpty spaces ahead: %d, Identity: %d, Factor: %g, Type: %d' % (self.x_position, self.y_position, self.speed, self.g, self.identity,self.factor,self.type)
+    def reset(self, x_position, speed, identity, factor, type):
         """A slightly more convenient way to set the position and speed simultaneously.
         """
-        self.position = position
+        self.x_position = x_position
+	self.y_position = y_position
         self.speed = speed
+	self.identity = self.identity
+	self.factor = self.factor
+	self.type = self.type
 
 class Lane(object):
     """Defines a Lane object with attributes length, map, and carlist.
@@ -136,13 +140,13 @@ class Lane(object):
         for spot in range(self.length):
             self.map[car.y_position][spot] = '_'
         for car in self.carlist:
-            self.map[car.y_position][car.position] = 'n'
+            self.map[car.y_position][car.x_position] = 'n'
     def g_update_car(self, car):
         """Finds and sets the appropriate g value for a specific car instance.
         """
         self.map_update(car)
-        if car.position != self.length - 1:
-            n = car.position + 1
+        if car.x_position != self.length - 1:
+            n = car.x_position + 1
         else:
             n = 0
         count = 0
@@ -166,7 +170,7 @@ class Lane(object):
         """Returns a list containing the position of each car in carlist."""
         l = []
         for car in self.carlist:
-            l.append([car.position,car.y_position])
+            l.append([car.x_position,car.y_position])
         return l
     def car_speeds(self):
         """Returns a list containing the speed of each car in carlist."""
@@ -176,9 +180,9 @@ class Lane(object):
         return l
     def move_car(self, car):
         """Changes the position of a given car based on its speed attribute, making sure to loop to the beginning of the lane appropriately."""
-        car.position += car.speed
-        if car.position > self.length - 1:
-            car.position -= self.length
+        car.x_position += car.speed
+        if car.x_position > self.length - 1:
+            car.x_position -= self.length
             
 
 class Data(object):
@@ -195,7 +199,7 @@ class Data(object):
 	    self.lane_history.append([])
     def append_position_history(self, lane):
         for i in range(len(lane.carlist)):
-            self.position_history[i].append(lane.carlist[i].position)
+            self.position_history[i].append(lane.carlist[i].x_position)
 	    self.lane_history[i].append(lane.carlist[i].y_position)
     def build_speed_history(self, lane):
         for car in lane.carlist:
@@ -223,20 +227,20 @@ def update_and_move(car, lane, vmax, p, cc):
 	if random.randint(1,100) < 50:
 		if car.y_position == (len(lane.map)-1):
 			pass
-		elif lane.map[car.y_position+1][car.position] == 'n':
+		elif lane.map[car.y_position+1][car.x_position] == 'n':
 			pass
 		else:
-			lane.map[car.y_position][car.position] = '_'
+			lane.map[car.y_position][car.x_position] = '_'
     			car.y_position += 1
     			lane.map_update(car)
     			lane.g_update_all
 	else: 
 		if car.y_position == 0:
 			pass
-		elif lane.map[car.y_position-1][car.position] == 'n':
+		elif lane.map[car.y_position-1][car.x_position] == 'n':
 			pass
 		else:
-			lane.map[car.y_position][car.position] = '_'
+			lane.map[car.y_position][car.x_position] = '_'
     			car.y_position -= 1
     			lane.map_update(car)
     			lane.g_update_all
