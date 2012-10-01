@@ -115,15 +115,10 @@ class Lane(object):
             else: ns = 's'
             raise ValueError('Tried to put %d car%s in a lane that has %d empty space%s.' % (n, ns, empty_space_count, ss))
         for i in range(n):
-	    uuu = 0
             x = random.randint(0, self.length - 1)
 	    y = random.randint(0, len(self.map)-1)
-	    print self.map, "map"
             while True:
-		#print x,y, "coords"
 		print self.map[y][x], "map"
-		uuu += 1
-		print uuu, "u"
                 if self.map[y][x] == '_':
                     self.add_car(Car(x,y))
                     break
@@ -132,9 +127,6 @@ class Lane(object):
 		    y = random.randint(0, len(self.map)-1)
 	    for car in self.carlist:
             	self.map_update(car)
-	    print self.map, "map2"
-	    #self.print_cars()
-	    print self.car_positions()
     def map_update(self,car):
         """Updates the map list to reflect changes in car positions."""
         for spot in range(self.length):
@@ -195,8 +187,8 @@ class Data(object):
         self.number_of_cars = 0
     def build_position_history(self, lane):
         for car in lane.carlist:
-            self.position_history.append([])
-	    self.lane_history.append([])
+            self.position_history.append([car.x_position])
+	    self.lane_history.append([car.y_position])
     def append_position_history(self, lane):
         for i in range(len(lane.carlist)):
             self.position_history[i].append(lane.carlist[i].x_position)
@@ -342,7 +334,8 @@ root = Tk()
 root.title("Traffic Simulation")
 import time
 
-color = ['snow','gainsboro','linen','moccasin','cornsilk','ivory','cornsilk','seashell','honeydew','azure','green','red','blue','turquoise','cyan','aquamarine','chartreuse','yellow','khaki','gold','goldenrod','sienna','peru','burlywood','beige','tan','chocolate','firebrick','orange','coral','tomato','salmon','pink','maroon','magenta','violet','plum','orchid','purple','thistle','slateblue1','royalblue1','lavenderblush1','skyblue1','SpringGreen2','DarkOliveGreen4','IndianRed1']
+color = ['red']
+#color = ['snow','gainsboro','linen','moccasin','cornsilk','ivory','cornsilk','seashell','honeydew','azure','green','red','blue','turquoise','cyan','aquamarine','chartreuse','yellow','khaki','gold','goldenrod','sienna','peru','burlywood','beige','tan','chocolate','firebrick','orange','coral','tomato','salmon','pink','maroon','magenta','violet','plum','orchid','purple','thistle','slateblue1','royalblue1','lavenderblush1','skyblue1','SpringGreen2','DarkOliveGreen4','IndianRed1']
 
 """color is a list of words that are recognized by the tkinter package as colors. can be expanded to include a wider variety of colors."""
 
