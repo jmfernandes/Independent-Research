@@ -217,10 +217,38 @@ def update_and_move(car, lane, vmax, p, cc):
     """this code switches cars to other lanes"""
     if random.randint(1,100) < 100: 
 	if random.randint(1,100) < 50:
+		track = []
 		if car.y_position == (len(lane.map)-1):
 			pass
 		elif lane.map[car.y_position+1][car.x_position] == 'n':
 			pass
+		elif car.x_position + car.speed >= len(lane.map[0]):
+			if lane.map[car.y_position+1][car.speed] == 'n':
+				pass
+			else:
+				lane.map[car.y_position][car.x_position] = '_'
+    				car.y_position += 1
+    				lane.map_update(car)
+    				lane.g_update_all
+		elif car.x_position + car.speed <= len(lane.map[0]):
+			for i in range(car.speed):
+				if lane.map[car.y_position+1][car.x_position+i] == 'n':
+					break
+					#pass
+				else:
+					track.append(car.x_position+i)
+			print track, "track"
+			if not track:
+				pass
+			else:
+				move_prob = random.randint(1,track[len(track)-1])
+			#if lane.map[car.y_position+1][car.x_position] == 'n':
+			#	pass
+			#else:
+			#	lane.map[car.y_position][car.x_position] = '_'
+    			#	car.y_position += 1
+    			#	lane.map_update(car)
+    			#	lane.g_update_all
 		else:
 			lane.map[car.y_position][car.x_position] = '_'
     			car.y_position += 1
@@ -231,6 +259,35 @@ def update_and_move(car, lane, vmax, p, cc):
 			pass
 		elif lane.map[car.y_position-1][car.x_position] == 'n':
 			pass
+		elif car.x_position + car.speed >= len(lane.map[0]):
+			if lane.map[car.y_position-1][car.speed] == 'n':
+				pass
+			else:
+				lane.map[car.y_position][car.x_position] = '_'
+    				car.y_position -= 1
+    				lane.map_update(car)
+    				lane.g_update_all
+		elif car.x_position + car.speed <= len(lane.map[0]):
+			for i in range(car.speed):
+				if lane.map[car.y_position-1][car.x_position+i] == 'n':
+					break
+					#pass
+				else:
+					track.append(car.x_position+i)
+			print track, "track"
+			if not track:
+				pass
+			else:
+				move_prob = random.randint(1,track[len(track)-1])
+			#if lane.map[car.y_position-1][car.x_position+car.speed] == 'n':
+			#	pass
+			#if lane.map[car.y_position-1][car.x_position] == 'n':
+			#	pass
+			#else:
+			#	lane.map[car.y_position][car.x_position] = '_'
+    			#	car.y_position -= 1
+    			#	lane.map_update(car)
+    			#	lane.g_update_all
 		else:
 			lane.map[car.y_position][car.x_position] = '_'
     			car.y_position -= 1
@@ -334,8 +391,8 @@ root = Tk()
 root.title("Traffic Simulation")
 import time
 
-color = ['red']
-#color = ['snow','gainsboro','linen','moccasin','cornsilk','ivory','cornsilk','seashell','honeydew','azure','green','red','blue','turquoise','cyan','aquamarine','chartreuse','yellow','khaki','gold','goldenrod','sienna','peru','burlywood','beige','tan','chocolate','firebrick','orange','coral','tomato','salmon','pink','maroon','magenta','violet','plum','orchid','purple','thistle','slateblue1','royalblue1','lavenderblush1','skyblue1','SpringGreen2','DarkOliveGreen4','IndianRed1']
+#color = ['red']
+color = ['snow','gainsboro','linen','moccasin','cornsilk','ivory','cornsilk','seashell','honeydew','azure','green','red','blue','turquoise','cyan','aquamarine','chartreuse','yellow','khaki','gold','goldenrod','sienna','peru','burlywood','beige','tan','chocolate','firebrick','orange','coral','tomato','salmon','pink','maroon','magenta','violet','plum','orchid','purple','thistle','slateblue1','royalblue1','lavenderblush1','skyblue1','SpringGreen2','DarkOliveGreen4','IndianRed1']
 
 """color is a list of words that are recognized by the tkinter package as colors. can be expanded to include a wider variety of colors."""
 
