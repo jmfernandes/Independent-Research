@@ -223,15 +223,35 @@ def update_and_move(car, lane, vmax, p, cc):
 		elif lane.map[car.y_position+1][car.x_position] == 'n':
 			pass
 		elif car.x_position + car.speed >= len(lane.map[0]):
-			if lane.map[car.y_position+1][car.speed] == 'n':
+			extra_variable = ( car.x_position + car.speed) - lane.length
+			print extra_variable, "extra"
+			for i in range(extra_variable):
+				if i == 0:
+					pass
+				elif lane.map[car.y_position+1][i] == 'n':
+					break
+				else:
+					track.append(i)
+			if not track:
 				pass
 			else:
+				move_prob2 = track[0]
+				car.speed += move_prob2
 				lane.map[car.y_position][car.x_position] = '_'
     				car.y_position += 1
     				lane.map_update(car)
     				lane.g_update_all
+
+
+			#if lane.map[car.y_position+1][car.speed] == 'n':
+			#	pass
+			#else:
+			#	lane.map[car.y_position][car.x_position] = '_'
+    			#	car.y_position += 1
+    			#	lane.map_update(car)
+    			#	lane.g_update_all
 		elif car.x_position + car.speed <= len(lane.map[0]):
-			for i in range(car.speed):
+			for i in range(1,car.speed):
 				if lane.map[car.y_position+1][car.x_position+i] == 'n':
 					break
 					#pass
@@ -242,8 +262,12 @@ def update_and_move(car, lane, vmax, p, cc):
 			if not track:
 				pass
 			else:
-				pass
-				#move_prob = random.randint(1,track[len(track)])
+				move_prob = track[0]
+				car.speed += move_prob
+				lane.map[car.y_position][car.x_position] = '_'
+    				car.y_position += 1
+    				lane.map_update(car)
+    				lane.g_update_all
 			#if lane.map[car.y_position+1][car.x_position] == 'n':
 			#	pass
 			#else:
@@ -281,7 +305,8 @@ def update_and_move(car, lane, vmax, p, cc):
 			if not track:
 				pass
 			else:
-				move_prob = random.randint(1,track[len(track)-1])
+				pass
+				#move_prob = random.randint(1,track[len(track)-1])
 			#if lane.map[car.y_position-1][car.x_position+car.speed] == 'n':
 			#	pass
 			#if lane.map[car.y_position-1][car.x_position] == 'n':
