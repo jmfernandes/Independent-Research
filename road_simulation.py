@@ -216,7 +216,7 @@ def update_and_move(car, lane, vmax, p, cc):
     """To be used only within other rules definitions. Sets the car's speed appropriately, then moves it."""
     """this code switches cars to other lanes"""
     if random.randint(1,100) < 100: 
-	if random.randint(1,100) < 50:
+	if random.randint(1,100) < 100:
 		track = []
 		if car.y_position == (len(lane.map)-1):
 			pass
@@ -238,10 +238,12 @@ def update_and_move(car, lane, vmax, p, cc):
 				else:
 					track.append(car.x_position+i)
 			print track, "track"
+			print len(track), len
 			if not track:
 				pass
 			else:
-				move_prob = random.randint(1,track[len(track)-1])
+				pass
+				#move_prob = random.randint(1,track[len(track)])
 			#if lane.map[car.y_position+1][car.x_position] == 'n':
 			#	pass
 			#else:
@@ -255,6 +257,7 @@ def update_and_move(car, lane, vmax, p, cc):
     			lane.map_update(car)
     			lane.g_update_all
 	else: 
+		track = []
 		if car.y_position == 0:
 			pass
 		elif lane.map[car.y_position-1][car.x_position] == 'n':
