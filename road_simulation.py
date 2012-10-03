@@ -215,20 +215,18 @@ class Data(object):
 def update_and_move(car, lane, vmax, p, cc):
     """To be used only within other rules definitions. Sets the car's speed appropriately, then moves it."""
     """this code switches cars to other lanes"""
-    if random.randint(1,100) < 100: 
-	if random.randint(1,100) < 100:
+    if random.randint(1,100) < 200: 
+	if random.randint(1,100) < 200:
 		track = []
-		if car.y_position == (len(lane.map)-1):
+		if car.g == 0:
+			pass
+		elif car.y_position == (len(lane.map)-1):
 			pass
 		elif lane.map[car.y_position+1][car.x_position] == 'n':
 			pass
 		elif car.x_position + car.speed >= len(lane.map[0]):
-			extra_variable = ( car.x_position + car.speed) - lane.length
-			print extra_variable, "extra"
-			for i in range(extra_variable):
-				if i == 0:
-					pass
-				elif lane.map[car.y_position+1][i] == 'n':
+			for i in range(1,car.speed):
+				if lane.map[car.y_position+1][i] == 'n':
 					break
 				else:
 					track.append(i)
@@ -253,21 +251,34 @@ def update_and_move(car, lane, vmax, p, cc):
 		elif car.x_position + car.speed <= len(lane.map[0]):
 			for i in range(1,car.speed):
 				if lane.map[car.y_position+1][car.x_position+i] == 'n':
-					break
-					#pass
+					track.append('steve')
 				else:
 					track.append(car.x_position+i)
 			print track, "track"
-			print len(track), len
 			if not track:
 				pass
 			else:
-				move_prob = track[0]
-				car.speed += move_prob
-				lane.map[car.y_position][car.x_position] = '_'
-    				car.y_position += 1
-    				lane.map_update(car)
-    				lane.g_update_all
+				if track[0] == 'steve':
+					print track.count('steve'), "steve"
+					pass
+				else:
+					move_prob = track[0]
+					car.speed += move_prob
+					lane.map[car.y_position][car.x_position] = '_'
+    					car.y_position += 1
+    					lane.map_update(car)
+    					lane.g_update_all
+			#print len(track), "len"
+			#if not track:
+			#	pass
+			#else:
+				#pass
+				#move_prob = track[0]
+				#car.speed += move_prob
+				#lane.map[car.y_position][car.x_position] = '_'
+    				#car.y_position += 1
+    				#lane.map_update(car)
+    				#lane.g_update_all
 			#if lane.map[car.y_position+1][car.x_position] == 'n':
 			#	pass
 			#else:
