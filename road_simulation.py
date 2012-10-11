@@ -373,6 +373,8 @@ def update_and_move(car, lane, vmax, p, cc):
 			"""slow cars have a chance of slowing down"""
 		else:
 			pass
+    if car.speed > (2*vmax):
+	car.speed -= 1
     if car.speed > car.g: 
         car.speed = car.g
 	"""stops cars from going through each other."""
