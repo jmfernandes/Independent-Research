@@ -241,7 +241,6 @@ class Game(object):
             clock.tick(60)
             time_passed_raw += clock.get_rawtime()
             time_passed = time_passed_raw/1000
-            print time_passed_raw
             if h == 30:
                 timetrack.append(time_passed_raw)
             #
@@ -262,6 +261,7 @@ class Game(object):
         ship.shippopulate()
         attack_priority = 0
         keeptrack = []
+        yoloswag = 0
         while True:
             for event in pygame.event.get():
                 key = pygame.key.get_pressed()
@@ -320,7 +320,10 @@ class Game(object):
             if (self.ballrect.top+ship.speed[1]) <= 0:
                 diff4 = -(self.ballrect.top+ship.speed[1])
                 self.ballrect = self.ballrect.move([0,diff4])
-                    
+
+
+            
+
             #moves asteroids
             for i in range(len(Asteroidlist)):
                 #print Asteroidrectlist.index(Asteroidrectlist[i])
@@ -336,6 +339,8 @@ class Game(object):
 
 
 
+            
+
             #time
             if not keeptrack and not initialize:
                 time_passed_raw = 0
@@ -350,12 +355,20 @@ class Game(object):
             time_passed_raw += clock.get_time()
             time_passed = time_passed_raw/1000
                 #print timetrack
-            print time_passed_raw
+#print time_passed_raw
                         # if time_passed%15 == 0:
                         #print "whatcha"
                     #elif time_passed%30 == 1:
                     #     print "verbatos"
 
+
+
+            #add asteroids
+            if time_passed%5 == 0 and time_passed != 0 and yoloswag == 0:
+                yoloswag = 1
+                asteroids.populate(1)
+            elif time_passed%5 != 0 and time_passed != 0 and yoloswag == 1:
+                yoloswag = 0 
             #draw the asteroids and kanye
             self.ballrect = self.ballrect.move(ship.speed)
             self.screen.fill(self.black)
