@@ -5,6 +5,9 @@ clock = pygame.time.Clock()
 Asteroidlist = []
 Asteroidrectlist = []
 Asteroidspeed = []
+timetrack = []
+initialize = []
+
 
 class Ship(object):
     def __init__(self,position=(0,0),speed=[0,0]):
@@ -77,8 +80,9 @@ class Game(object):
         #self.loop()
         self.whoopi()
     
-    def shooting(self,lazkey):
+    def shooting(self,lazkey,time):
         #print lazkey
+        time_passed_raw = time
         attack_priority = 1
         ship = Ship()
         newpos = self.ballrect.midtop
@@ -232,12 +236,20 @@ class Game(object):
                     Asteroidspeed[i][1] = -Asteroidspeed[i][1]
             for i in range(len(Asteroidlist)):
                 self.screen.blit(Asteroidlist[i], Asteroidrectlist[i])
+            
+            #time
+            clock.tick(60)
+            time_passed_raw += clock.get_rawtime()
+            time_passed = time_passed_raw/1000
+            print time_passed_raw
+            if h == 30:
+                timetrack.append(time_passed_raw)
+            #
             self.ballopenrect = self.ballopenrect.move(ship.speed)
             self.ballrect = self.ballrect.move(ship.speed)
             self.screen.blit(self.ballopen, self.ballopenrect)
             self.screen.blit(self.laz, self.lazrect)
             pygame.display.flip()
-            clock.tick(60)
 
 
 
@@ -249,6 +261,7 @@ class Game(object):
         asteroids.populate(asteroids.number)
         ship.shippopulate()
         attack_priority = 0
+        keeptrack = []
         while True:
             for event in pygame.event.get():
                 key = pygame.key.get_pressed()
@@ -280,13 +293,17 @@ class Game(object):
                 #animation for shooting
                 if event.type == pygame.KEYDOWN and (event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_UP or  event.key == pygame.K_DOWN):
                     if event.key == pygame.K_LEFT:
-                        self.shooting(1)
+                        self.shooting(1,time_passed_raw)
+                        keeptrack.append(1)
                     if event.key == pygame.K_RIGHT:
-                        self.shooting(2)
+                        self.shooting(2,time_passed_raw)
+                        keeptrack.append(1)
                     if event.key == pygame.K_DOWN:
-                        self.shooting(3)
+                        self.shooting(3,time_passed_raw)
+                        keeptrack.append(1)
                     if event.key == pygame.K_UP:
-                        self.shooting(4)
+                        self.shooting(4,time_passed_raw)
+                        keeptrack.append(1)
                     #clock.tick
                     #self.shooting()
                     
@@ -316,15 +333,38 @@ class Game(object):
                     #if Asteroidrectlist[i].collidelistall(Asteroidrectlist[:(i)]):
                     #               Asteroidspeed[i][0] = -Asteroidspeed[i][0]
                     #     Asteroidspeed[i][1] = -Asteroidspeed[i][1]
-                    
-        
+
+
+
+            #time
+            if not keeptrack and not initialize:
+                time_passed_raw = 0
+                initialize.append(1)
+            else:
+                if not timetrack:
+                    pass
+                else:
+                    time_passed_raw = timetrack[0]
+                    timetrack.pop(0)
+            clock.tick(60)
+            time_passed_raw += clock.get_time()
+            time_passed = time_passed_raw/1000
+                #print timetrack
+            print time_passed_raw
+                        # if time_passed%15 == 0:
+                        #print "whatcha"
+                    #elif time_passed%30 == 1:
+                    #     print "verbatos"
+
+            #draw the asteroids and kanye
             self.ballrect = self.ballrect.move(ship.speed)
             self.screen.fill(self.black)
             self.screen.blit(self.ball, self.ballrect)
             for i in range(len(Asteroidlist)):
                 self.screen.blit(Asteroidlist[i], Asteroidrectlist[i])
             pygame.display.flip()
-            clock.tick(60)
+            
+
 
             
     def shoot(self):
