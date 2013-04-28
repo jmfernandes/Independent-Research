@@ -106,6 +106,7 @@ class Game(object):
         pygame.display.flip()
         
         h = 0
+        g = 0
         asteroid_pos = []
         for ast in range(len(Asteroidrectlist)):
             asteroid_pos.append(Asteroidrectlist[ast].midtop)
@@ -114,79 +115,193 @@ class Game(object):
         pew_wav_file = "pew.wav"
         pew_wav = pygame.mixer.Sound(pew_wav_file)
         pew_wav.play(loops=0, fade_ms=0)
-        while h <30:
-            h +=1
+        while h <0:
+            h += 1
+            g += 1
             self.screen.fill(self.black)
             #shoot the lazer
             if lazkey == 1:
-                if h>2 and h<4:
+                if g>2 and g<4:
                     self.laz = pygame.image.load("laser_3.png")
                     self.laz = pygame.transform.flip(self.laz,1,0)
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.bottomright = lazpos
-                elif h>4 and h<6:
+                    #collision of laser with asteroid detection
+                    #removes asteroid that is shot
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g>4 and g<6:
                     self.laz = pygame.image.load("laser_2.png")
                     self.laz = pygame.transform.flip(self.laz,1,0)
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.bottomright = lazpos
-                elif h==6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g==6:
                     self.laz = pygame.image.load("laser_1.png")
                     self.laz = pygame.transform.flip(self.laz,1,0)
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.bottomright = lazpos
-                elif h>6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g>6 and g<31:
                     self.lazrect = self.lazrect.move([-10,0])
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
             elif lazkey == 2:
-                if h>2 and h<4:
+                if g>2 and g<4:
                     self.laz = pygame.image.load("laser_3.png")
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.bottomleft = lazpos
-                elif h>4 and h<6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g>4 and g<6:
                     self.laz = pygame.image.load("laser_2.png")
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.bottomleft = lazpos
-                elif h==6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g==6:
                     self.laz = pygame.image.load("laser_1.png")
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.bottomleft = lazpos
-                elif h>6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g>6 and g<31:
                     self.lazrect = self.lazrect.move([10,0])
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
             elif lazkey == 3:
-                if h>2 and h<4:
+                if g>2 and g<4:
                     self.laz = pygame.image.load("laser_3.png")
                     self.laz = pygame.transform.rotate(self.laz, 270)
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.midtop = lazpos2
-                elif h>4 and h<6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g>4 and g<6:
                     self.laz = pygame.image.load("laser_2.png")
                     self.laz = pygame.transform.rotate(self.laz, 270)
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.midtop = lazpos2
-                elif h==6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g==6:
                     self.laz = pygame.image.load("laser_1.png")
                     self.laz = pygame.transform.rotate(self.laz, 270)
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.midtop = lazpos2
-                elif h>6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g>6 and g<31:
                     self.lazrect = self.lazrect.move([0,10])
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
             elif lazkey == 4:
-                if h>2 and h<4:
+                if g>2 and g<4:
                     self.laz = pygame.image.load("laser_3.png")
                     self.laz = pygame.transform.rotate(self.laz, 90)
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.midbottom = lazpos2
-                elif h>4 and h<6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g>4 and g<6:
                     self.laz = pygame.image.load("laser_2.png")
                     self.laz = pygame.transform.rotate(self.laz, 90)
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.midbottom = lazpos2
-                elif h==6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g==6:
                     self.laz = pygame.image.load("laser_1.png")
                     self.laz = pygame.transform.rotate(self.laz, 90)
                     self.lazrect = self.laz.get_rect()
                     self.lazrect.midbottom = lazpos2
-                elif h>6:
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
+                elif g>6 and g<31:
                     self.lazrect = self.lazrect.move([0,-10])
+                    #collision of laser with asteroid detection
+                    if self.lazrect.collidelistall(Asteroidrectlist):
+                        ast_index = self.lazrect.collidelistall(Asteroidrectlist)
+                        Asteroidlist.pop(ast_index[0])
+                        Asteroidrectlist.pop(ast_index[0])
+                        Asteroidspeed.pop(ast_index[0])
+                        g = 100
                 
             #check for movement
             for event in pygame.event.get():
