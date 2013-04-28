@@ -115,7 +115,7 @@ class Game(object):
         pew_wav_file = "pew.wav"
         pew_wav = pygame.mixer.Sound(pew_wav_file)
         pew_wav.play(loops=0, fade_ms=0)
-        while h <0:
+        while h <30:
             h += 1
             g += 1
             self.screen.fill(self.black)
