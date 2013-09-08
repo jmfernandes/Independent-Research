@@ -1,0 +1,222 @@
+﻿
+Thermal Storage For Use With Scheffler Solar Concentrator
+
+Abstract
+A physical device is constructed from steel and Portland cement. The device is heated with a halogen light to test its thermal storage properties. A mathematical model of the physical device is developed with the aid of SolidWorks. The mathematical model is compared to experimental results of the physical device in order to make predictions and conclusions about the heat storage capability of the current physical device and future devices. 
+
+Introduction
+The Scheffler solar concentrator was developed by Wolfgang Scheffler for use in third world countries. Research at Cal Poly over the past two years has focused on replicating the Scheffler solar concentrator. This paper focuses on improving the Scheffler solar concentrator by developing a more efficient method of retaining solar energy. 
+
+[[we looked at different stuff]]. Different heating sources were testing, such as a heating plate, charcoal, and halogen shop lights. The length in which the device was allowed to heat and cool was also changed. There were two models created, the first will be referred to as TSU A and the second will be referred to as TSU B. A computer simulation was constructed with SolidWorks. The SolidWorks model was compared to physical data in order to determine how well the theoretical model functions.  
+
+First Physical Model
+
+TSU A consisted of a cylindrical mass of Portland cement 5 inches in diameter and one foot tall. Six pieces of rebar were placed in a circular arrangement half way out from the center of the device. In order to get the shape, metal plates were bent into a cylindrical shape. The plates were not wide enough to achieve the desired height of the device, so two rows had to be stacked on top of each other. Plastic sheeting lined the inside to prevent any leaks. The purpose of the metal sheeting is to provide rigid support to the curing cement. The metal sheeting was then covered in plastic sheeting to prevent leaks and was placed inside a 5 gallon bucket. The cement was poured into the bag inside the bucket and the rebar was placed by hand. The cement was allowed to cure for 24 hours. The rebar protruded above the top of the device, so the extra rebar was cut off. 
+
+
+Three experimental tests were carried out. First, TSU A was placed on top of a 1000 watt hot plate without any insulation. TSU A was heated up and then allowed to cool for 16 hours without any insulation. [[results]]The next test, TSU A was placed in the 5 gallon bucket with an inch of pink housing insulation placed on the bottom, around the side and on top. The top portion was the insulation was removed while heating the device. To heat TSU A, the hot plate was flipped up-side-down and placed on top of the device. Because the hot plate was not intended to be used in this way, it overheated and shut down several times. The top-most portion of TSU A achieved a temperature of 60 Celsius after 6 hours. These results are shown in figure 3. The third test also had TSU A sitting in the 5 gallon bucket, surrounded by pink housing insulation, but this time the device was heated by coals. The coals were able to deliver a lot of heat in a very short amount of time. The cooking plate of TSU A where the coals were placed reached 160 Celsius in only an hour. This heat was not transferred to the rest of TSU A and most of the heat was lost to the environment before it could be stored in the device. Like with the second test, most of the device remained near room temperature. These results are shown in figure 2.
+
+
+
+
+
+
+
+There are several conclusions that can be drawn from TSU A. First, it is important to make sure the device is heated as evenly as possible. Figure 2 shows TSU A cooling from 60 Celsius to room temperature in about 10 hours. Figure 3 shows that TSU A cooled from 60 Celsius to 50 Celsius in the same amount of time. Both were heated from the top, and the only difference between the two is that in figure 3 TSU A was heated for longer so the device was able to heat more evenly. Second, It should be noted that portland cement and rebar is very cheap. A thermal storage unit can be made for less than $10. These materials should be used for future devices. Third, although Portland cement is able to hold heat well, it doesn't distribute the heat very well and it is likely that more rebar or some other metal will have to be incorporated into the physical model. This is evident in the difficulty of getting the device to heat evenly. Wherever TSU A was heated from, the other end of TSU A was room temperature. Lastly, there was a measurable difference between the heat retained by the device when insulation was used compared to when it wasn't. Without insulation, the device cooled from 60 Celsius to room temperature in two hours, whereas with insulation the cooking plate only dropped 10 Celsius in 10 hours. It is likely that future models should incorporate some form of insulation.
+
+
+Second model
+
+TSU B consisted of a metal pipe 5 inches in diameter surrounded by cement. Six rebar pieces extend downward to distribute heat throughout the mass Additionally, six one inch rebar conducted heat upward to a metal cooking plate roughly 7 inches by 7 inches. Ideally, the plate would be sitting very close to the pipe, but due to lack of foresight, foot long rebar was welded to the top of the pipe. Later, it was cut down to one inch. It may have been better to have cut the rebar shorter. The concentrated sunlight from the Scheffler is directed into the cavity of the pipe. For testing, a 500 watt halogen light was placed inside the cavity.
+
+
+
+
+
+There are several noticeable advantages of TSU B compared to TSU A. TSU A had to be heated from the top and it lacked sufficient conductivity. Most of the heat escaped upward away from the device. The hottest the plate ever got was 160 Celsius, but the rest of the mass was room temperature, so the plate cooled off quickly. In TSU B, the inside surface of the pipe climbed higher than 600 Celsius with a 500 watt halogen light inside the pipe cavity. It took less than two hours to achieve this temperature. TSU A was also smaller, so it couldn't hold as much heat, however, TSU B is very heavy and is difficult to transport.
+
+
+
+
+Data Logger
+The temperature data logger that was used was the usb-5203 made by Measurement Computing. It has eight different channels. The thermocouples were type T thermocouple wires with the high end being constantan (55% copper and 45% nickel) and the low end being copper. 
+
+In order to operate the data logger it has to be plugged into a computer via USB that has InstaCal software installed. InstaCal is free and is available from Measurement Computing. The InstaCal software allows the user to configure the settings of the data logger. It allows the user to set which channels will be taking data and at what time increment. The time increment is set for all channels and cannot be set independently of channel. The InstaCal software also allows the user to retrieve data from past experiments. The memory card for the data logger has a capacity of 512 MB. If the user records temperature readings for all eight channels every minute for 16 hours, then the file should be between 100-200 kB. This would allow for over 2,500 individual experiments to be stored on the card. Thus, memory is not an issue. 
+
+In order to start taking data, the data logger has to be removed from the computer, and the USB to wall outlet adapter attached to the power cord. Once the data logger is plugged into a wall outlet, it will begin taking data. A green light will illuminate on the device to let you know that it is taking data. Pressing the button next to the green light stops the data sessions. Unplugging the data logger while the light is still on could corrupt the data session.
+
+
+Testing
+As stated earlier, a 500 watt halogen light was used to heat TSU B. The halogen light was obtained from a halogen shop lamp that was purchased from a local hardware store. The heat lamp was deconstructed and the heating element was extracted so it would fit inside the cavity of TSU B. 
+
+
+
+SolidWorks
+SolidWorks was the modeling software used to run the numerical simulations for the thermal storage device. SolidWorks allows for very precise modeling of the physical proportions of the device. SolidWorks can make very intricate details in the model. If needed, the threading of the pipe could have been included in the model. We chose not to include that level of detail.
+
+To create the storage device in SolidWorks, first the rebar pieces, pipe, and cooking plate were created as parts. SolidWorks allows the use of parts, which are treated as a single homogeneous piece, and assemblies, which are composed of multiple parts that have the boundary conditions between them defined. Assemblies do not allow for parts to “clip through” (overlap in 3D space) each other due to the conflicts at the boundary between the parts. Simple shapes like the rebar can be created by drawing a circle in the “sketch” panel and then extruding a body from it. This creates a cylinder that can be set to any length. The pipe is created the same way, with the addition of a hole cut in the cylinder.  This is done with the “cut hole” feature in SolidWorks. This feature allows you to specify where the hole is centered and the diameter and depth of the cut. The hole terminated half an inch from the end of the cylinder, because the physical model had a cap on the end of the pipe. The plate was created by making a square in the “sketch” panel and extruding a body from that square. The dimensions can be changed once it is created. 
+
+The next step was to create an assembly from the parts already created. The main menu of SolidWorks contains a “create new assembly” option. When this is clicked, this creates a window similar to the “parts” window, except with the addition of an “add parts” button. This is used to add the metal plate, the pipe, and 12 copies of the rebar piece. The parts are then moved so that they are in the same position as the physical model. Naturally, pieces are going to overlap in 3D space. As stated earlier, overlapping parts are not allowed in SolidWorks modeling. There is a feature in SolidWorks, according to the help menu, where pieces can be cut at the interference between the two, and then the extra part can be deleted, so that none of the pieces clip through each other. This is one way to solve the interference, but instead the parts were fused together to form a single part. This is done by going to the “features” panel and selecting the “create new part” from the assembly.
+
+Creating the cement around the metal framework of the device is difficult due to the asymmetry in the geometry. In order to create the cement, a solid cylinder the size of the device is created in the parts menu. In the previous step, the framework assembly was created into a part so a new assembly must be created. In this assembly, the metal framework and the cylinder is added. The metal framework part is placed inside the cylinder and it is “subtracted” from the cylinder. This will create a hole inside the cement cylinder that is exactly the same size as the metal framework. Next, a hole was cut in the side face of the cement cylinder where the concentrated sunlight from the Scheffler heats the device. Lastly, the metal framework is removed from the assembly, so that the newly created cement shell can be saved as a part.
+
+
+
+Now that there is a part for the cement shell and a part for the metal framework, a final assembly can be created to run numerical models. Once the two parts are added to the assembly, they are positioned using the “mate” tool. The mate tool is a very simple way to position parts without having to worry about them overlapping. The first mate was between the bottom of the cooking plate and the top of the cooking plate indention made in the cement part. This locks the piece in on the vertical axis. The next mate was between the side of one of the rebar to the inside of the corresponding rebar hole. 
+
+To add a shell of insulation around the SolidWorks model, another cylinder the same size as the cement is created, and the “shell” tool instead of the “extrude” tool is chosen. Then, “shell outward” is selected in the features. The insulation part is added to the assembly and mated to the other parts.
+
+Running a Thermal Study in SolidWorks 
+
+Thermal studies in SolidWorks are run through the “SolidWorks simulation” tab. First, the materials for the different parts are defined, so that properties like heat capacity can be incorporated into the numerical model. SolidWorks has a large selection of materials to choose from, but there is also an option to create a custom material. Since cement isn't on the list of materials, a custom material has to be defined for it. Next, Thermal loads are defined for the model. The initial temperature of the device is defined, as well as the heat entering and leaving the device. For initial temperature, its necessary to click and drag a box around the model in order to set the temperature for the parts. The heat power is defined as 500 watts spread over the inside surface of the pipe. Heat loss from the device is from radiative loss and convective loss. According to SolidWorks help menu, typical values for the convection coefficient used to calculate convective heat loss range from 10-25 W/m^2 for air. Higher values correspond to colder and faster wind. Radiative loss is determined by emissivity and the view factor. The view factor accounts for heat that “bounces back” and ranges from zero to one. A view factor of one was chosen for the tests.
+
+
+
+
+
+
+
+
+
+
+
+
+Data
+Time (seconds)
+time(hours)
+SolidWorks(heating)
+SolidWorks(cooling)
+experiment
+
+1800
+0.5
+36.73
+
+47.44
+
+3600
+1
+58.16
+
+61.77
+
+5400
+1.5
+74.22
+
+71.88
+
+7200
+2
+85.37
+
+79.01
+
+9000
+2.5
+92.93
+
+84.53
+
+10800
+3
+98.06
+
+88.8
+
+12600
+3.5
+101.54
+
+92.68
+
+14400
+4
+103.93
+
+96.7
+
+16200
+4.5
+105.58
+
+99.81
+
+18000
+5
+
+
+88.36
+
+21600
+6
+
+78.76
+60
+
+25200
+7
+
+60.54
+47.05
+
+28800
+8
+
+46.64
+39.11
+
+32400
+9
+
+36.72
+33.65
+
+36000
+10
+
+29.84
+29.6
+
+39600
+11
+
+25.11
+26.77
+
+43200
+12
+
+21.88
+24.5
+
+46800
+13
+
+19.67
+22.98
+
+50400
+14
+
+18.17
+21.57
+
+54000
+15
+
+17.13
+20.6
+
+
+
+
+
+
+Analysis
+TSU B was heated for 4.5 hours with the 500 watt halogen light without any insulation, then the heat source was turned off and the thermal storage device was allowed to cool naturally. This is shown in the sudden decline of temperature in the experimental data. Two SolidWorks thermal studies were conducted. The first study modeled the heating of the storage device and the second study modeled the period where the thermal storage device was cooling. The experimental and SolidWorks data shows a fast decline in temperature when the device is cooling down. This is reflected in the experiment and numerical model. 
+
+Node 5308 in figure 10 is the temperature of the hot plate taken over five hours of heating. Notice that in Figure 11 and the corresponding data table, the temperature for the theoretical and experimental data for the temperature of the cooking plate reach just above 100 degrees Celsius at five hours. Figure 10 shows the temperature of the cooking plate to be at 138 degrees Celsius. The simulation for figure 10 was run with the convection coefficient set at 10 W/m^2, and the simulation for figure 11 was run with the convection coefficient set at 16 W/m^2. This shows that convective heat loss has a noticeable affect on the temperature of the cooking plate. 
+
+Conclusion
+The future of this project should focus on getting a device that can operate with the Scheffler. TSU B should work well with a Scheffler solar concentrator, but it has not been tested yet. Also, all experimental data was taken in the winter and early spring. Data should be taken in the summer to see how effective the thermal storage will be in warmer climates. It is also an important goal to determine how large to make the thermal storage device. As stated earlier, it is important to make sure that the thermal storage device heats as evenly as possible. If large parts of the device are near ambient temperature, then the heat will be quickly drawn away from the cooking plate. Any further optimization of the thermal storage device should focus on size and relative proportions of metal framework to cement. Rebar, cement, and pumice are cheap enough that other materials don't need to be considered. Also, the global availability of rebar, cement, and pumice make them ideal for use in third world countries. 
